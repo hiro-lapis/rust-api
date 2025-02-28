@@ -6,6 +6,10 @@ RUN cargo build --release
 FROM debian:bookworm-slim
 WORKDIR /app
 
+# db connection
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
+
 # add user of 'book'
 RUN adduser book && chown -R book /app
 USER book

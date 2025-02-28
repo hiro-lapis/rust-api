@@ -4,9 +4,16 @@
 
 ```
 docker compose up -d --build
+```
 
-# execute api
+each task defined in Makefile.toml can be excuted by `cargo make`
+
+```
+// run [tasks.run]
 cargo make run
+
+// run [tasks.run-in-docker]
+cargo make run-in-docker
 ```
 
 ### recommended packages
