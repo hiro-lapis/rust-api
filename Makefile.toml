@@ -2,12 +2,14 @@
 # prevent workspace auto run on each crate
 default_to_workspace = false
 
-[env]
 # global env
+[env]
 HOST = "0.0.0.0"
 PORT = 18080
+GLOBAL = "rust api"
+APP_NAME = "rust api"
 DATABASE_USERNAME = "app"
-DATABASE_PASSWORD = "password"
+DATABASE_PASSWORD = "passwd"
 DATABASE_NAME = "app"
 DATABASE_PORT_OUTER = 5432
 DATABASE_PORT_INNER = 5432
@@ -19,40 +21,45 @@ AUTH_TOKEN_TTL = 86400
 [tasks.set-env-docker.env]
 DATABASE_HOST = "postgres"
 DATABASE_PORT = "${DATABASE_PORT_INNER}"
+DATABASE_URL = "postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?user=${DATABASE_USERNAME}&password=${DATABASE_PASSWORD}"
+REDIS_HOST = "redis"
+REDIS_PORT = "${REDIS_PORT_INNER}"
 JAEGER_HOST = "jaeger"
 JAEGER_PORT = 6831
 
 # env for outer docker compose network
 [tasks.set-env-local.env]
+LOCAL = "local environment"
 DATABASE_HOST = "localhost"
 DATABASE_PORT = "${DATABASE_PORT_OUTER}"
 DATABASE_URL = "postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}?user=${DATABASE_USERNAME}&password=${DATABASE_PASSWORD}"
 REDIS_HOST = "localhost"
 REDIS_PORT = "${REDIS_PORT_OUTER}"
+JAEGER_HOST = "localhost"
 JAEGER_PORT = 6831
 
 # build command
 [tasks.before-build]
 run_task = [
-    {
-        name = [
-            "compose-up-db",
-            "compose-up-redis",
-        ]
-    },
+  { name = [
+    "compose-up-db",
+    "compose-up-redis",
+  ] },
 ]
 
 [tasks.compose-build-app]
 extend = "set-env-local"
 command = "docker"
 args = [
-    "compose", "build", "app",
-    "--build-arg", "BUILDKIT_INLINE_CACHE=1", "${@}",
+  "compose", "build", "app",
+  "--build-arg", "BUILDKIT_INLINE_CACHE=1", "${@}"
 ]
 
 [tasks.run]
 extend = "set-env-local"
-dependencies = ["before-build"]
+# use precon not dep, to avoid reset env by env set of other containers
+# NOTE: if u want use set-local-env in before-build, apply 'extend' in before-build
+precondition = ["before-build"]
 command = "cargo"
 args = ["run", "${@}"]
 
@@ -63,7 +70,13 @@ command = "docker"
 args = ["compose", "up", "-d", "app"]
 
 [tasks.logs]
-extend = ["set-env-local"]
+extend = "set-env-docker"
+dependencies = ["before-build"]
+command = "docker"
+args = ["compose", "logs", "${@}"]
+
+[tasks.build]
+extend = "set-env-local"
 dependencies = ["before-build"]
 command = "cargo"
 args = ["build", "${@}"]
@@ -78,7 +91,7 @@ args = ["check"]
 [tasks.watch]
 extend = "set-env-local"
 dependencies = ["before-build"]
-run_task = [{name = ["fmt", "clippy", "test"] }]
+run_task = [ {name = ["fmt", "clippy", "test"] } ]
 watch = true
 
 [tasks.fmt]
@@ -93,18 +106,20 @@ args = ["clippy", "--all", "--all-targets", "${@}"]
 
 [tasks.test]
 extend = "set-env-local"
-install_crate = { crate_name = "cargo-nexttest", binary = "cargo", test_arg = [
-    "nextest", "--help",
-]}
+install_crate = { crate_name = "cargo-nextest", binary = "cargo", test_arg = [
+  "nextest", "--help",
+] }
 command = "cargo"
 args = [
-    "nexttest", "run", "--workspace",
-    "-status-level", "all", "--test-threads=1",
+  "nextest", "run", "--workspace",
+  "--status-level", "all", "--test-threads=1", "--no-tests=pass",
 ]
 
 [tasks.clippy-ci]
 dependencies = ["before-build"]
 run_task = "clippy"
+command = "cargo"
+args = ["clippy", "--", "--no-deps", "-Dwarnings"]
 
 [tasks.test-ci]
 dependencies = ["before-build"]
@@ -113,35 +128,42 @@ run_task = "test"
 # migration
 [tasks.migrate]
 extend = "set-env-local"
-install_crate = {
-    crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help", version = "0.7.3"
-}
+install_crate = { crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help", version = "0.7.3" }
 script = '''
-#!/bin/bask
+#!/bin/bash
 until sqlx migrate run --source adapter/migrations; do
     sleep 1
 done
 '''
 
 [tasks.sqlx]
-exntend = "set-env-local"
-install_crate = {
-    crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help",
-    version = "0.7.3"
-}
+extend = "set-env-local"
+install_crate = { crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help", version = "0.7.3" }
 command = "sqlx"
 args = ["${@}", "--source", "adapter/migrations"]
 
 [tasks.psql]
-exntend = "set-env-local"
+extend = "set-env-local"
 command = "docker"
 args = [
-    "run", "-it", "--rm",
-    "--network", "host",
-    "-v", "${PWD}:/work",
-    "postgres:15", "psql", "${DATABASE_URL}",
-    "-f", "/work/data/initial_setup.sql"
+  "run", "-it", "--rm",
+  "--network", "host",
+  "-v", "${PWD}:/work",
+  "postgres:15", "psql", "${DATABASE_URL}", "${@}"
 ]
+
+[tasks.initial-setup]
+extend = "set-env-local"
+command = "docker"
+args = [
+  "run", "-it", "--rm",
+  "--network", "host",
+  "-v", "${PWD}:/work",
+  "postgres:15", "psql", "${DATABASE_URL}",
+  "-f", "/work/data/initial_setup.sql"
+]
+
+### Docker compose
 
 [tasks.compose]
 extend = "set-env-docker"
@@ -149,9 +171,9 @@ command = "docker"
 args = ["compose", "${@}"]
 
 [tasks.compose-up-db]
-exntend = "set-env-docker"
+extend = "set-env-docker"
 command = "docker"
-args = ["compose", "up", "-d", "postgres"]
+args = ["compose", "${@}"]
 
 [tasks.compose-up-redis]
 extend = "set-env-docker"
@@ -166,4 +188,4 @@ args = ["compose", "down"]
 [tasks.compose-remove]
 extend = "set-env-docker"
 command = "docker"
-args = ["compose", "down" "-v"]
+args = ["compose", "down", "-v"]

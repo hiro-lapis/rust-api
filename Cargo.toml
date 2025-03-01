@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [[bin]]
+# file name and target path when compile
 name = "app"
 path = "src/main.rs"
 [dependencies]
