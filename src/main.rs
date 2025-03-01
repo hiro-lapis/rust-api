@@ -3,13 +3,13 @@ use axum::{routing::get, Router};
 use tokio::net::TcpListener;
 
 // handler
-async fn hello_world() -> &'static str {
-    "Hello, world!"
+async fn lapis() -> &'static str {
+    "hiro lapis"
 }
 
 #[tokio::main]
 async fn main() {
-    let app = Router::new().route("/hello", get(hello_world));
+    let app = Router::new().route("/lapis", get(lapis));
     let addr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080);
 
     let listener = TcpListener::bind(addr).await.unwrap();
