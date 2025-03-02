@@ -26,4 +26,7 @@ cargo nextest run
 
 // you can debug with...
 cargo mak --loglevel verbose run
+
+// start creating new crate
+cargo new --lib <crate name>
 ```
