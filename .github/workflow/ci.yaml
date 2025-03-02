@@ -1,0 +1,36 @@
+name: CI for api
+on:
+  push: brances[main]
+  pull_request:
+    paths-ignore:
+      - "README.md"
+      - "frontend/**"
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      # 1 clone this repository in the workflow
+      - uses: actions/checkout@v4
+      # 2
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+      # 3
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install stable
+      # 4 install cargo-make, cargo-nextest
+      - name: Install cargo-related tools
+        uses: taiki-e/install-action@v2
+      # 5 build entirely
+      - name: Tests compile
+        run: cargo make test-ci --no-run ----locked
+      # 6
+      - name: Test
+        run: cargo make test-ci
+      # 7 linter
+      - name: Clippy
+        run: cargo make clippy-ci -- -Dwarnings
+      # 8 formatter
+      - name: Rustfmt
+        run: cargo make fmt -- --check
