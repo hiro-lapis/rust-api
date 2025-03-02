@@ -24,11 +24,11 @@ pub async fn health_check_db(State(db): State<PgPool>) -> StatusCode {
 #[tokio::main]
 async fn main() -> Result<()> {
     let database_cfg = DatabaseConfig {
-        host: "localhost".into(),
-        port: 5432,
-        username: "app".into(),
-        password: "password".into(),
-        database: "app".into(),
+        host: std::env::var("DATABASE_HOST").unwrap(),
+        port: std::env::var("DATABASE_PORT").unwrap().parse::<u16>().unwrap(),
+        username: std::env::var("DATABASE_USERNAME").unwrap(),
+        password: std::env::var("DATABASE_PASSWORD").unwrap(),
+        database: std::env::var("DATABASE_NAME").unwrap(),
     };
 
     let conn_pool = connect_database_with(database_cfg);

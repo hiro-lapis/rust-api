@@ -6,7 +6,8 @@
 docker compose up -d --build
 ```
 
-each task defined in Makefile.toml can be excuted by `cargo make`
+each task defined in Makefile.toml can be excuted by `cargo make run`  
+Note that `cargo run` seems to work, but fails in reading env vars.  
 
 ```
 // install cargo
