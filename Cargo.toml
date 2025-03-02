@@ -6,7 +6,7 @@ edition = "2021"
 [[bin]]
 # file name and target path when compile
 name = "app"
-path = "src/main.rs"
+path = "src/bin/app.rs"
 [dependencies]
 anyhow = "1.0.75"
 axum = { version = "0.7.5", features = ["macros"] }
