@@ -1,5 +1,4 @@
-use std::net::{Ipv4Addr, SocketAddr};
-use axum::{extract::State, http::StatusCode, routing::get, Router};
+use axum::{extract::State, http::StatusCode};
 use registry::AppRegistry;
 
 pub async fn health_check() -> StatusCode {
