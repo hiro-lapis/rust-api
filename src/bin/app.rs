@@ -31,7 +31,7 @@ async fn main() -> Result<()> {
         database: std::env::var("DATABASE_NAME").unwrap(),
     };
 
-    let conn_pool = adapter::database::connect_database_with(database_cfg);
+    let conn_pool = connect_database_with(database_cfg);
     let app = Router::new()
         .route("/health", get(health_check))
         .route("/lapis", get(lapis))
@@ -71,9 +71,9 @@ impl From<DatabaseConfig> for PgConnectOptions {
     }
 }
 
-// fn connect_database_with(cfg: DatabaseConfig) -> PgPool {
-//     PgPool::connect_lazy_with(cfg.into())
-// }
+fn connect_database_with(cfg: DatabaseConfig) -> PgPool {
+    PgPool::connect_lazy_with(cfg.into())
+}
 
 #[sqlx::test]
 async fn health_check_db_works (pool: sqlx::PgPool) {
