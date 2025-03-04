@@ -6,12 +6,29 @@ edition = "2021"
 [[bin]]
 # file name and target path when compile
 name = "app"
-path = "src/main.rs"
-[dependencies]
+path = "src/bin/app.rs"
+
+[workspace.dependencies]
+# registering dependencies
+adapter = { path = "./adapter" }
+api = { path = "./api" }
+kernel = { path = "./kernel" }
+shared = { path = "./shared" }
+registry = { path = "./registry" }
+### separation of workspace dep and third party ###
 anyhow = "1.0.75"
 axum = { version = "0.7.5", features = ["macros"] }
 sqlx = { version = "0.7.3", features = ["runtime-tokio", "uuid", "chrono", "macros", "postgres", "migrate"] }
 tokio = { version = "1.37.0", features = ["full"] }
-
-[dev-dependencies]
 rstest = "0.18.2"
+
+[dependencies]
+# sharing dependencies in every workspace
+adapter.workspace = true
+api.workspace = true
+shared.workspace = true
+registry.workspace = true
+anyhow.workspace = true
+tokio.workspace = true
+axum.workspace = true
+sqlx.workspace = true
