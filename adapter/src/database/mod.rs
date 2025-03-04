@@ -20,6 +20,9 @@ impl ConnectionPool {
     pub fn inner_ref(&self) -> &PgPool {
         &self.0
     }
+    pub fn new(pool: PgPool) -> Self {
+        Self(pool)
+    }
 }
 
 pub fn connect_database_with(cfg: &DatabaseConfig) -> ConnectionPool {
