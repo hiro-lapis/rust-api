@@ -30,8 +30,8 @@ A. Mudularization in rust is termed as workspace. Run `cargo new --lib`, writing
 Q. What is `derive`? such as `#[derive(Clone)]` and `#[derive(enw)]` ?
 A. 
 
-Q. 
-A. 
+Q. Whan run `docker compose up -d app --build`, this will fail and show errors shows env vars is not set. why?
+A. Because env vars are defined in Makefile.toml, not .env. Therefore, docker build commands always have to be executed by `cargo make xxx`.  
 
 Q. 
 A. 

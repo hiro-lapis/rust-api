@@ -24,6 +24,12 @@ Optionally, conducive commands are executable.
 // test
 cargo nextest run
 
+// migration
+cargo make migrate
+
+// revert migration
+cargo makme sqlx migrate revert
+
 // you can debug with...
 cargo mak --loglevel verbose run
 
