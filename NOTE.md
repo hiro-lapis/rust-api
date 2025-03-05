@@ -27,7 +27,7 @@ A. For testability, kernel/repository is helpful to mock functions that avoid ex
 Q. What is workspace in rust?
 A. Mudularization in rust is termed as workspace. Run `cargo new --lib`, writing workspace member in cargo.toml, and open crate `pub mod xxx` in lib.rs, enables create project's libraries.  
 
-Q. What is `derive`? such as `#[derive(Clone)]` and `#[derive(enw)]` ?
+Q. What is `derive`? such as `#[derive(Clone)]` , `#[derive(enw)]` , `#[derive(Debug)]` ?
 A. 
 
 Q. Whan run `docker compose up -d app --build`, this will fail and show errors shows env vars is not set. why?
@@ -41,3 +41,8 @@ A.
 
 Q. 
 A. 
+
+### Impression
+
+- Rust has many features, some of them cannot be seen in other languages, such as ownership,  
+While they are useful, but I'm afraid of missing using them and write ugly code due to my experience to date.  
