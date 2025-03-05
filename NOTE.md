@@ -46,3 +46,5 @@ A.
 
 - Rust has many features, some of them cannot be seen in other languages, such as ownership,  
 While they are useful, but I'm afraid of missing using them and write ugly code due to my experience to date.  
+
+- crud process written in this book as I do in current project, ZB. ZB is constructed with clean archtechture.  

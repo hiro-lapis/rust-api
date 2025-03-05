@@ -7,6 +7,6 @@ use crate::model::book::{Book, event::CreateBook};
 #[async_trait]
 pub trait BookRepository: Send + Sync {
     async fn create(&self, event: CreateBook) -> Result<()>;
-    async fn find_all(&self) -> Result<Option<Book>>;
+    async fn find_all(&self) -> Result<Vec<Book>>;
     async fn find_by_id(&self, book_id: Uuid) -> Result<Option<Book>>;
 }
