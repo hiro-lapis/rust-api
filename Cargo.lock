@@ -1180,7 +1180,13 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "async-trait",
+ "chrono",
+ "derive-new",
+ "mockall",
+ "serde",
  "shared",
+ "sqlx",
+ "strum",
  "uuid",
 ]
 
