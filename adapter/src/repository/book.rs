@@ -69,9 +69,10 @@ impl BookRepository for BookRepositoryImpl {
                 FROM books
                 WHERE book_id = $1
             "#,
-            book_id as _ // disable type check
-                         // NOTE: ^ is written in query_as! macro, means that this is not cast, just disable type check temporarily
+            book_id as _
         )
+        // disable type check
+        // NOTE: ^ is written in query_as! macro, means that this is not cast, just disable type check temporarily
         .fetch_optional(self.db.inner_ref())
         .await
         .map_err(AppError::SpecificOperationError)?;
