@@ -1,7 +1,7 @@
 use std::net::{Ipv4Addr, SocketAddr};
 
 use adapter::database::connect_database_with;
-use anyhow::{Result, Error, Context};
+use anyhow::{Result, Context};
 use api::route::{
     health::build_health_check_routers,
     book::build_book_routers,
@@ -47,7 +47,7 @@ async fn bootstrap() -> Result<()> {
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(
                     DefaultOnResponse::new()
-                        .level(Level::into(self))
+                        .level(Level::INFO)
                         .latency_unit(LatencyUnit::Millis)
             ),
         )
@@ -63,7 +63,8 @@ async fn bootstrap() -> Result<()> {
         .context("Unexpected error happened in server")
         .inspect_err(|e| {
             tracing::error!(
-                error.cause.chain = ?e.error.message %e, "Unexpected error"
+                // separate log structure with ,
+                error.cause_chain = ?e,error.message = %e, "Unexpected error"
             )
         })
 }

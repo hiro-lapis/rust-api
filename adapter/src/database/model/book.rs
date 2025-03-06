@@ -22,7 +22,7 @@ impl From<BookRow> for Book {
             // ..
         } = value;
         Self {
-            id: book_id,
+            id: book_id.into(),
             title,
             author,
             isbn,
