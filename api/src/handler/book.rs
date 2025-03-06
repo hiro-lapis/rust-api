@@ -5,8 +5,9 @@ use axum::{
     Json,
 };
 use registry::AppRegistry;
-use thiserror::Error;
-use uuid::Uuid;
+use shared::error::AppError;
+// use thiserror::Error;
+// use uuid::Uuid;
 
 use crate::model::book::{BookResponse, CreateBookRequest};
 
@@ -43,18 +44,18 @@ pub async fn show_book(
         .await
         .and_then(|bc| match bc {
             Some(bc) => Ok(Json(bc.into())),
-            None => Err(anyhow::anyhow!("The specific book was not found.")),
+            None => Err(AppError::EntityNotFound("The specific book was not found.".to_string())),
         })
         .map_err(AppError::from)
 }
 
-#[derive(Error, Debug)]
-pub enum AppError {
-    #[error("{0}")]
-    InternalError(#[from] anyhow::Error),
-}
-impl IntoResponse for AppError {
-    fn into_response(self) -> Response {
-        (StatusCode::INTERNAL_SERVER_ERROR, "").into_response()
-    }
-}
+// #[derive(Error, Debug)]
+// pub enum AppError {
+//     #[error("{0}")]
+//     InternalError(#[from] anyhow::Error),
+// }
+// impl IntoResponse for AppError {
+//     fn into_response(self) -> Response {
+//         (StatusCode::INTERNAL_SERVER_ERROR, "").into_response()
+//     }
+// }

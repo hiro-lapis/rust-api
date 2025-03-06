@@ -62,3 +62,6 @@ impl IntoResponse for AppError {
         status_code.into_response()
     }
 }
+
+// result type that can handle AppError
+pub type AppResult<T> = Result<T, AppError>;
