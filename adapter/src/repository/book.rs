@@ -1,13 +1,16 @@
-use crate::database::{model::book::BookRow, ConnectionPool};
+use crate::database::model::book::BookRow;
 use async_trait::async_trait;
 use derive_new::new;
-use kernel::{model::book::{event::CreateBook, Book}, repository::book::BookRepository};
+use kernel::model::book::{event::CreateBook, Book};
 use kernel::model::id::BookId;
+use kernel::repository::book::BookRepository;
 use shared::error::{AppError, AppResult};
+
+use crate::database::ConnectionPool;
 
 #[derive(new)]
 pub struct BookRepositoryImpl {
-    db: ConnectionPool
+    db: ConnectionPool,
 }
 
 #[async_trait]
@@ -31,6 +34,7 @@ impl BookRepository for BookRepositoryImpl {
         // make sure don't use anyhow::Ok, just use core::Ok
         Ok(())
     }
+
     async fn find_all(&self) -> AppResult<Vec<Book>> {
         let rows: Vec<BookRow> = sqlx::query_as!(
             BookRow,
@@ -51,6 +55,7 @@ impl BookRepository for BookRepositoryImpl {
 
         Ok(rows.into_iter().map(Book::from).collect())
     }
+
     async fn find_by_id(&self, book_id: BookId) -> AppResult<Option<Book>> {
         let row: Option<BookRow> = sqlx::query_as!(
             BookRow,
@@ -65,7 +70,7 @@ impl BookRepository for BookRepositoryImpl {
                 WHERE book_id = $1
             "#,
             book_id as _ // disable type check
-            // NOTE: ^ is written in query_as! macro, means that this is not cast, just disable type check temporarily
+                         // NOTE: ^ is written in query_as! macro, means that this is not cast, just disable type check temporarily
         )
         .fetch_optional(self.db.inner_ref())
         .await
