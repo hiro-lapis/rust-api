@@ -13,10 +13,10 @@ macro_rules! define_id {
             Hash,
             Deserialize,
             Serialize,
-            sqlx::Type,
+            sqlx::Type, // for use as id column's value
         )]
         #[serde(into = "String")]
-        #[sqlx(transparent)]
+        #[sqlx(transparent)] // for use as id column's value
         pub struct $id_type(uuid::Uuid);
 
         impl $id_type {
