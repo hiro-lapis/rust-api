@@ -63,8 +63,28 @@ https://doc.rust-jp.rs/book-ja/ch19-06-macros.html#%E5%B1%9E%E6%80%A7%E3%81%8B%E
 Q. When I command `sqlx migrate add -r start --source adapter/migrations`, this failes in error `sqlx not found`. How can solve?  
 A. Plz run make command that contains `install_crate = { crate_name = "sqlx-cli" ...`. If only do that, sqlx command line will be automatically installed and be able to make migration file.  
 
-Q. 
-A. 
+Q. What is `xxx impl` and `yyy impl for <xxx>`
+A. [impl](https://doc.rust-jp.rs/book-ja/ch05-03-method-syntax.html?search=#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E8%A8%98%E6%B3%95) is the grammer that defines a struct's method.  
+`xxx impl for <yyy>`, precisely `<trait> impl for <struct>` is that struct defines function to implement trait. `self` refers the struct. It seems to `トレイトが構造体を実装する`, but actual means is contrary. `構造体がトレイトを実装する` is correct.  
+
+```
+trait Greet {
+    fn greet(&self);
+}
+
+struct User {
+    name: String,
+}
+// implement User for trait
+impl Greet for User {
+    fn greet(&self) {
+        println!("Hello, {}!", self.name);
+    }
+}
+```
+
+Q. Is there any difference between interface in other language and trait in rust?  
+A. Trait in rust accepts default implementation.  
 
 ### Impression
 
