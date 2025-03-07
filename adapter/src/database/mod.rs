@@ -1,6 +1,8 @@
 use shared::config::DatabaseConfig;
 use sqlx::{postgres::PgConnectOptions, PgPool};
 
+pub mod model;
+
 // from DatabaseConfig to PgConnectOptions
 fn make_pg_connect_options(cfg: &DatabaseConfig) -> PgConnectOptions {
     PgConnectOptions::new()
