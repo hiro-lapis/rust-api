@@ -27,17 +27,41 @@ A. For testability, kernel/repository is helpful to mock functions that avoid ex
 Q. What is workspace in rust?
 A. Mudularization in rust is termed as workspace. Run `cargo new --lib`, writing workspace member in cargo.toml, and open crate `pub mod xxx` in lib.rs, enables create project's libraries.  
 
-Q. What is `derive`? such as `#[derive(Clone)]` , `#[derive(enw)]` , `#[derive(Debug)]` ?
-A. 
+Q. What is `derive`? such as `#[derive(Clone)]` , `#[derive(new)]` , `#[derive(Debug)]` ?
+A. These are one of the procedural macro. derive helpfully generate default implementaion.  
+- `#[derive(Clone)]` enables to use `clone()`, copy method  
+- `#[derive(new)]`  enables to 
+- `#[derive(Debug)]` enables output a struct's information for debug.  
+
+Below is example of `#[derive(Debug)]`  
+```
+#[derive(Debug)]
+struct Person {
+    name: String,
+    age: u32,
+}
+
+fn main() {
+    let person = Person {
+        name: String::from("Alice"),
+        age: 30,
+    };
+
+    println!("{:?}", person); // Debug 表示
+    println!("{:#?}", person); // インデント付きで見やすく表示
+}
+```
 
 Q. Whan run `docker compose up -d app --build`, this will fail and show errors shows env vars is not set. why?
 A. Because env vars are defined in Makefile.toml, not .env. Therefore, docker build commands always have to be executed by `cargo make xxx`.  
 
-Q. 
-A. 
+Q. What is macro?  
+A. Macro is grouped functionality that can be seen C, C++. Rust has couple of types of macro(procedual, declarative), both of them are code that can write other code known as meta programming.  
+https://doc.rust-jp.rs/book-ja/ch19-06-macros.html#%E5%B1%9E%E6%80%A7%E3%81%8B%E3%82%89%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E7%94%9F%E6%88%90%E3%81%99%E3%82%8B%E6%89%8B%E7%B6%9A%E3%81%8D%E7%9A%84%E3%83%9E%E3%82%AF%E3%83%AD  
 
-Q. 
-A. 
+
+Q. When I command `sqlx migrate add -r start --source adapter/migrations`, this failes in error `sqlx not found`. How can solve?  
+A. Plz run make command that contains `install_crate = { crate_name = "sqlx-cli" ...`. If only do that, sqlx command line will be automatically installed and be able to make migration file.  
 
 Q. 
 A. 
@@ -48,3 +72,15 @@ A.
 While they are useful, but I'm afraid of missing using them and write ugly code due to my experience to date.  
 
 - crud process written in this book as I do in current project, ZB. ZB is constructed with clean archtechture.  
+
+### development task steps
+
+1. create migration `cargo make migration`
+2. define trait of repository and function in kernel
+3. define struct of model that receive return value of repoisotry in kernel, and struct of event model that passes input in INSERT or UPDATE statement.  
+4. define xxxRow trait in adapter
+5. implement repository trait in adapter
+
+
+* in each step, some layers require aditional dependencies. In this case, add dependencies in cargo.toml.  
+* make sure exporting new modules.  
