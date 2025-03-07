@@ -86,6 +86,35 @@ impl Greet for User {
 Q. Is there any difference between interface in other language and trait in rust?  
 A. Trait in rust accepts default implementation.  
 
+Q. Some structs have code like `self.0` implementation. What and why can do this?  
+A. These structs are **tuple type** struct that has only one field which allows to access 0 index field.  
+
+```
+pub struct AuthorizedUserId(UserId); // tuple
+
+impl AuthorizedUserId {
+    pub fn into_inner(self) -> UserId {
+        self.0
+    }
+}
+
+```
+
+Q. What is New type pattern ?
+A. 
+
+Q.
+A. 
+
+Q.
+A. 
+
+Q.
+A. 
+
+Q.
+A. 
+
 ### Impression
 
 - Rust has many features, some of them cannot be seen in other languages, such as ownership,  

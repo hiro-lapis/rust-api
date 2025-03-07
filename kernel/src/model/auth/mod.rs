@@ -1,2 +1,2 @@
 pub mod event;
-pub  struct AccessToken(pub String);
+pub struct AccessToken(pub String);
