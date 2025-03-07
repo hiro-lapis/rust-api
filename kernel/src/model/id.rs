@@ -41,7 +41,6 @@ macro_rules! define_id {
             }
         }
 
-
         impl From<uuid::Uuid> for $id_type {
             fn from(u: uuid::Uuid) -> Self {
                 Self(u)
@@ -49,10 +48,7 @@ macro_rules! define_id {
         }
 
         impl std::fmt::Display for $id_type {
-            fn fmt (
-                &self,
-                f: &mut std::fmt::Formatter<'_>,
-            ) -> std::fmt::Result {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 write!(
                     f,
                     "{}",
@@ -68,10 +64,8 @@ macro_rules! define_id {
                 id.to_string()
             }
         }
-    }
+    };
 }
-
-
 
 define_id!(BookId);
 define_id!(UserId);

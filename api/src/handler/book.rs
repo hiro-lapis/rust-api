@@ -3,9 +3,9 @@ use axum::{
     http::StatusCode,
     Json,
 };
+use kernel::model::id::BookId;
 use registry::AppRegistry;
 use shared::error::AppError;
-use kernel::model::id::BookId;
 
 use crate::model::book::{BookResponse, CreateBookRequest};
 
@@ -42,7 +42,9 @@ pub async fn show_book(
         .await
         .and_then(|bc| match bc {
             Some(bc) => Ok(Json(bc.into())),
-            None => Err(AppError::EntityNotFound("The specific book was not found.".to_string())),
+            None => Err(AppError::EntityNotFound(
+                "The specific book was not found.".to_string(),
+            )),
         })
         .map_err(AppError::from)
 }

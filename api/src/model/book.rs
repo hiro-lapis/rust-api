@@ -23,7 +23,6 @@ impl From<CreateBookRequest> for CreateBook {
             description,
         } = value;
 
-
         Self {
             title,
             author,
