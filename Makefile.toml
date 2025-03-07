@@ -100,6 +100,20 @@ extend = "set-env-local"
 command = "cargo"
 args = ["fmt", "--all", "${@}"]
 
+[tasks.create-hash]
+script_runner = "@rust"
+script = '''
+//! ```cargo
+//! [dependencies]
+//! bcrypt = "0.15.1"
+//! ```
+fn main() {
+  let password = &std::env::args().collect::<Vec<String>>()[1];
+  let hashed = bcrypt::hash(password, bcrypt::DEFAULT_COST).unwrap();
+  println!("{}", hashed);
+}
+'''
+
 [tasks.clippy]
 extend = "set-env-local"
 command = "cargo"
