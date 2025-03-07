@@ -25,10 +25,14 @@ impl AppConfig {
 
         let redis = RedisConfig {
             host: std::env::var("REDIS_HOST")?,
-            port: std::env::var("REDIS_PORT")?.parse::<u16>,
+            port: std::env::var("REDIS_PORT")?.parse::<u16>()?,
         };
 
-        Ok(Self { auth, database, redis })
+        Ok(Self {
+            auth,
+            database,
+            redis,
+        })
     }
 }
 
