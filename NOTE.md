@@ -106,8 +106,8 @@ A.
 Q. Sometimes `type Error = AppError;` can be seen in structs' `impl` while cannot be seen the type defnition. What or why is the difference?
 A. 
 
-Q.
-A. 
+Q. arguments sometimes prefixed with `_`. Why?  
+A. These are unused arguments. To avoid warning by compiler, prefix is used.  
 
 Q.
 A. 

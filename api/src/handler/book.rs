@@ -1,15 +1,19 @@
 use axum::{
-    extract::{Path, State},
+    extract::{Path, Query, State},
     http::StatusCode,
     Json,
 };
-use kernel::model::id::BookId;
+use garde::Validate;
+use kernel::model::{book::event::DeleteBook, id::BookId};
 use registry::AppRegistry;
-use shared::error::AppError;
+use shared::error::{AppError, AppResult};
 
 use crate::{
     extractor::AuthorizedUser,
-    model::book::{BookResponse, CreateBookRequest},
+    model::book::{
+        BookListQuery, BookResponse, CreateBookRequest, PaginatedBookResponse, UpdateBookRequest,
+        UpdateBookRequestWithUserIds,
+    },
 };
 
 pub async fn register_book(
@@ -19,24 +23,28 @@ pub async fn register_book(
 ) -> Result<StatusCode, AppError> {
     registry
         .book_repository()
-        .create(req.into())
+        .create(req.into(), user.id())
         // await result and format return value with map func
         .await
         .map(|_| StatusCode::CREATED)
         .map_err(AppError::from)
 }
+
 pub async fn show_book_list(
+    _user: AuthorizedUser,
+    Query(query): Query<BookListQuery>,
     State(registry): State<AppRegistry>,
-) -> Result<Json<Vec<BookResponse>>, AppError> {
+) -> Result<Json<PaginatedBookResponse>, AppError> {
     registry
         .book_repository()
-        .find_all()
+        .find_all(query.into())
         .await
-        .map(|v| v.into_iter().map(BookResponse::from).collect::<Vec<_>>())
+        .map(PaginatedBookResponse::from)
         .map(Json) // .map(|e| Json(e))
-        .map_err(AppError::from)
 }
+
 pub async fn show_book(
+    _user: AuthorizedUser,
     Path(book_id): Path<BookId>, // receive path parameter value
     State(registry): State<AppRegistry>,
 ) -> Result<Json<BookResponse>, AppError> {
@@ -53,13 +61,35 @@ pub async fn show_book(
         .map_err(AppError::from)
 }
 
-// #[derive(Error, Debug)]
-// pub enum AppError {
-//     #[error("{0}")]
-//     InternalError(#[from] anyhow::Error),
-// }
-// impl IntoResponse for AppError {
-//     fn into_response(self) -> Response {
-//         (StatusCode::INTERNAL_SERVER_ERROR, "").into_response()
-//     }
-// }
+pub async fn update_book(
+    user: AuthorizedUser,
+    Path(book_id): Path<BookId>,
+    State(registry): State<AppRegistry>,
+    Json(req): Json<UpdateBookRequest>,
+) -> AppResult<StatusCode> {
+    req.validate(&())?;
+
+    let update_book = UpdateBookRequestWithUserIds::new(book_id, user.id(), req);
+    registry
+        .book_repository()
+        .update(update_book.into())
+        .await
+        .map(|_| StatusCode::OK)
+}
+
+pub async fn delete_book(
+    user: AuthorizedUser,
+    Path(book_id): Path<BookId>,
+    State(registry): State<AppRegistry>,
+) -> AppResult<StatusCode> {
+    let delete_book = DeleteBook {
+        book_id,
+        requested_user: user.id(),
+    };
+
+    registry
+        .book_repository()
+        .delete(delete_book)
+        .await
+        .map(|_| StatusCode::OK)
+}

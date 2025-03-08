@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use crate::database::model::book::{BookRow, PaginatedBookRow};
 use async_trait::async_trait;
 use derive_new::new;
@@ -175,8 +173,6 @@ mod tests {
     use crate::repository::user::UserRepositoryImpl;
     use kernel::{model::user::event::CreateUser, repository::user::UserRepository};
 
-    use super::*;
-
     #[sqlx::test]
     async fn test_register_book(pool: sqlx::PgPool) -> anyhow::Result<()> {
         // TODO: create test data with fixture
@@ -185,13 +181,12 @@ mod tests {
             .await?;
         let user_repo = UserRepositoryImpl::new(ConnectionPool::new(pool.clone()));
         let user = user_repo
-            .create(
-                CreateUser {
-                    name: "hiro".into(),
-                    email: "hiro@exaple.com".into(),
-                    password: "test_password".into(),
-                }
-            ).await?;
+            .create(CreateUser {
+                name: "hiro".into(),
+                email: "hiro@exaple.com".into(),
+                password: "test_password".into(),
+            })
+            .await?;
 
         let book_repo = BookRepositoryImpl::new(ConnectionPool::new(pool));
         let book = CreateBook {

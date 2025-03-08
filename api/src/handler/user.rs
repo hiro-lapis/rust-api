@@ -85,7 +85,7 @@ pub async fn get_current_user(user: AuthorizedUser) -> Json<UserResponse> {
 }
 
 pub async fn change_password(
-    user: AuthorizedUser,
+    _user: AuthorizedUser,
     Path(user_id): Path<UserId>,
     State(registry): State<AppRegistry>,
     Json(req): Json<UpdateUserPasswordRequest>,

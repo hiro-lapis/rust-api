@@ -147,3 +147,19 @@ impl From<UpdateUserRoleRequestWithuserId> for UpdateUserRole {
         }
     }
 }
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BookOwner {
+    pub id: UserId,
+    pub name: String,
+}
+
+// to avoid conflict, write kernel side trait with full path
+impl From<kernel::model::user::BookOwner> for BookOwner {
+    fn from(value: kernel::model::user::BookOwner) -> Self {
+        let kernel::model::user::BookOwner { id, name } = value;
+
+        Self { id, name }
+    }
+}
