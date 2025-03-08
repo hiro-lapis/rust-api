@@ -5,7 +5,7 @@ use kernel::{
         id::UserId,
         role::Role,
         user::{
-            event::{CreateUser, DeleteUser, UpdateUserCurrentPassword, UpdateUserRole},
+            event::{CreateUser, DeleteUser, UpdateUserPassword, UpdateUserRole},
             User,
         },
     },
@@ -113,7 +113,7 @@ impl UserRepository for UserRepositoryImpl {
         }
     }
 
-    async fn update_password(&self, event: UpdateUserCurrentPassword) -> AppResult<()> {
+    async fn update_password(&self, event: UpdateUserPassword) -> AppResult<()> {
         let mut tx = self.db.begin().await?;
 
         let original_password_hash = sqlx::query!(

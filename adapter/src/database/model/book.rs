@@ -21,7 +21,7 @@ impl From<BookRow> for Book {
             // ..
         } = value;
         Self {
-            id: book_id.into(),
+            id: book_id,
             title,
             author,
             isbn,

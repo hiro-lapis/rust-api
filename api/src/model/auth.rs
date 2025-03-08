@@ -1,8 +1,4 @@
-use kernel::model::{
-    auth::event::CreateToken,
-    book::{event::CreateBook, Book},
-    id::{BookId, UserId},
-};
+use kernel::model::id::UserId;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
