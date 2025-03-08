@@ -20,7 +20,7 @@ impl AppConfig {
         };
 
         let auth = AuthConfig {
-            ttl: std::env::var("AUTH_TOLEN_TTL")?.parse::<u64>()?,
+            ttl: std::env::var("AUTH_TOKEN_TTL")?.parse::<u64>()?,
         };
 
         let redis = RedisConfig {
