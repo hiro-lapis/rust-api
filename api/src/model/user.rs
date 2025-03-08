@@ -4,7 +4,7 @@ use kernel::model::{
     id::UserId,
     role::Role,
     user::{
-        event::{UpdateUserPassword, UpdateUserRole},
+        event::{CreateUser, UpdateUserPassword, UpdateUserRole},
         User,
     },
 };
@@ -110,6 +110,22 @@ pub struct CreateUserRequest {
     email: String,
     #[garde(length(min = 1))]
     password: String,
+}
+
+impl From<CreateUserRequest> for CreateUser {
+    fn from(value: CreateUserRequest) -> Self {
+        let CreateUserRequest {
+            name,
+            email,
+            password,
+        } = value;
+
+        Self {
+            name,
+            email,
+            password,
+        }
+    }
 }
 
 #[derive(Deserialize)]
