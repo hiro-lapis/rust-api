@@ -1,15 +1,13 @@
-use axum::{
-    async_trait,
-    extract::FromRequestParts,
-    http::request::Parts
+use axum::{async_trait, extract::FromRequestParts, http::request::Parts, RequestPartsExt};
+use axum_extra::{
+    headers::{authorization::Bearer, Authorization},
+    TypedHeader,
 };
-use axum_extra::{headers::{authorization::Bearer, Authorization}, TypedHeader};
 use kernel::model::{auth::AccessToken, id::UserId};
 use registry::AppRegistry;
 use shared::error::AppError;
 
 // use kernel::model::user::User;
-
 
 pub struct AuthorizedUser {
     pub access_token: AccessToken,
@@ -53,7 +51,5 @@ impl FromRequestParts<AppRegistry> for AuthorizedUser {
             .ok_or(AppError::UnauthenticatedError)?;
 
         Ok(Self { access_token, user })
-
-
     }
 }
