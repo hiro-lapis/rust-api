@@ -1,5 +1,7 @@
 ## rust api
 
+This repository is the manual copy of [rusty-book-manager](https://github.com/rust-web-app-book/rusty-book-manager).  
+
 ### set up
 
 ```
@@ -16,6 +18,12 @@ cargo install --force cargo-make
 
 // run [tasks.run-in-docker]
 cargo make run-in-docker
+
+// during development, if you want to restart local
+cargo make compose-remove \
+cargo make build \
+cargo make initial-setup \
+cargo make run
 ```
 
 Optionally, conducive commands are executable.  
