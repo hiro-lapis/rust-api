@@ -1,7 +1,10 @@
+@accessToken = {{login.response.body.accessToken}}
 
 ###  login
+
 # @name login
 POST http://localhost:8080/auth/login HTTP/1.1
+Authorization: {{accessToken}}
 content-type: application/json
 
 {
@@ -9,8 +12,26 @@ content-type: application/json
     "password": "password"
 }
 
+###  users index
+
+
+GET http://localhost:8080/api/v1/users HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+###  user create
+
+POST http://localhost:8080/api/v1/users HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+{
+    "name": "hiro",
+    "email": "lapis@example.com",
+    "password": "eighthofmarch"
+}
+
 ###  book create
-@authToken = {{login.response.body.accessToken}}
 
 POST http://localhost:8080/books/register HTTP/1.1
 content-type: application/json
