@@ -11,8 +11,8 @@ pub struct CreateCheckout {
 
 #[derive(new)]
 pub struct UpdateReturned {
-    pub checkout_id: CheckoutId,
     pub book_id: BookId,
+    pub checkout_id: CheckoutId,
     pub returned_by: UserId,
     pub returned_at: DateTime<Utc>,
 }
