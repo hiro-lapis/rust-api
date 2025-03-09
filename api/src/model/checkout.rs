@@ -1,5 +1,5 @@
 use ::serde::Serialize;
-use chrono::{naive::serde, DateTime, Utc};
+use chrono::{DateTime, Utc};
 use kernel::model::{
     checkout::{Checkout, CheckoutBook},
     id::{BookId, CheckoutId, UserId},
