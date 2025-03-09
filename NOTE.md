@@ -103,7 +103,7 @@ impl AuthorizedUserId {
 Q. What is New type pattern ?
 A. 
 
-Q.
+Q. Sometimes `type Error = AppError;` can be seen in structs' `impl` while cannot be seen the type defnition. What or why is the difference?
 A. 
 
 Q.
