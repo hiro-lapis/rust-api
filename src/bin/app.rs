@@ -1,25 +1,19 @@
 use std::net::{Ipv4Addr, SocketAddr};
 
 use adapter::database::connect_database_with;
-use anyhow::{Result, Context};
-use api::route::{
-    health::build_health_check_routers,
-    book::build_book_routers,
-};
+use anyhow::{Context, Result};
+use api::route::{book::build_book_routers, health::build_health_check_routers};
 use axum::Router;
 use registry::AppRegistry;
-use shared::{config::AppConfig, env::{which, Environment}};
+use shared::{
+    config::AppConfig,
+    env::{which, Environment},
+};
 use tokio::net::TcpListener;
-use tracing_subscriber::{
-    layer::SubscriberExt,
-    util::SubscriberInitExt,
-    EnvFilter,
-};
-use tower_http::trace::{
-    DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer,
-};
+use tower_http::trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer};
 use tower_http::LatencyUnit;
 use tracing::Level;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 // TODO: try to implement this api
 // handler
@@ -48,8 +42,8 @@ async fn bootstrap() -> Result<()> {
                 .on_response(
                     DefaultOnResponse::new()
                         .level(Level::INFO)
-                        .latency_unit(LatencyUnit::Millis)
-            ),
+                        .latency_unit(LatencyUnit::Millis),
+                ),
         )
         .with_state(registry);
     let addr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080);
