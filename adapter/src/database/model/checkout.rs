@@ -36,7 +36,7 @@ impl From<CheckoutRow> for Checkout {
         } = value;
         Self {
             id: checkout_id,
-            checkout_out_by: user_id,
+            checked_out_by: user_id,
             checked_out_at,
             returned_at: None,
             book: CheckoutBook {
@@ -75,7 +75,7 @@ impl From<ReturnedCheckoutRow> for Checkout {
         } = value;
         Self {
             id: checkout_id,
-            checkout_out_by: user_id,
+            checked_out_by: user_id,
             checked_out_at,
             returned_at: Some(returned_at), // assign value as optional
             book: CheckoutBook {
