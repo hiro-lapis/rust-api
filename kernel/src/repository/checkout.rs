@@ -1,8 +1,13 @@
 use async_trait::async_trait;
 use shared::error::AppResult;
 
-use crate::model::{checkout::{event::{CreateCheckout, UpdateReturned}, Checkout}, id::{BookId, UserId}};
-
+use crate::model::{
+    checkout::{
+        event::{CreateCheckout, UpdateReturned},
+        Checkout,
+    },
+    id::{BookId, UserId},
+};
 
 #[async_trait]
 pub trait CheckoutRepository: Send + Sync {
