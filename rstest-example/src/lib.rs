@@ -13,9 +13,17 @@ mod tests {
     // 3. pass fixture as arg on test fn (type is return value of fixture)
 
     #[rstest]
-    fn it_works(get24: i64) {
+    fn it_works_with_fixture(get24: i64) {
         let _result = add(2, 2);
         assert_eq!(get24, 4);
+    }
+
+
+    #[rstest]
+    #[case(10, 5, 15)]
+    fn it_works_with_pameters(#[case] a: u64,#[case] b: u64,#[case] expected: u64) {
+        let _result = add(a, b);
+        assert_eq!(_result, expected);
     }
 
     #[fixture]

@@ -6,6 +6,7 @@ publish.workspace = true
 license.workspace = true
 
 [dependencies]
+mockall.workspace = true
 
 [dev-dependencies]
 rstest = "0.25.0"
