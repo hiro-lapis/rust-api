@@ -76,14 +76,14 @@ mod tests {
     // Thus, it is not necessary to prepare test database manually.
     #[sqlx::test]
     async fn it_works_with_sqlx(pool: sqlx::PgPool) {
-        // let row = sqlx::query!("SELECT 1 + 1 AS result")
-        let row = sqlx::query!("SELECT COUNT(*) FROM books;")
+        let row = sqlx::query!("SELECT 1 + 1 AS result")
+        // let row = sqlx::query!("SELECT COUNT(*) FROM books;")
             .fetch_one(&pool)
             .await
             .unwrap();
         // if test failed, row will be printed
         dbg!(&row);
-        let result = row;
+        let result = row.result;
         assert_eq!(result, Some(2));
     }
 
@@ -111,7 +111,7 @@ mod tests {
         // dbg!(std::env::vars());
         // dbg!(std::env::var("DATABASE_URL").unwrap());
         let result = row.result;
-        assert_eq!(result, Some(3));
+        assert_eq!(result, Some(2));
     }
 
     // pub async fn establish_connection() -> Pool<Postgres> {
