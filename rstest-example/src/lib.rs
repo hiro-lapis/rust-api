@@ -69,11 +69,6 @@ mod tests {
         assert_eq!(_result, expected);
     }
 
-    // sqlx test
-    // https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md#changed-10
-    // https://docs.rs/sqlx/latest/sqlx/attr.test.html#automatic-test-database-management-requires-migrate-feature
-    // #[sqlx::test] attribute includes automatic database management, migration and fixture application.
-    // Thus, it is not necessary to prepare test database manually.
     #[sqlx::test]
     async fn it_works_with_sqlx(pool: sqlx::PgPool) {
         let row = sqlx::query!("SELECT 1 + 1 AS result")
@@ -87,38 +82,28 @@ mod tests {
         assert_eq!(result, Some(2));
     }
 
-    #[sqlx::test]
+    #[sqlx::test(migrator = "MIGRATOR", fixtures("common"))]
     async fn it_works_with_sqlx2(pool: sqlx::PgPool) {
-        // let pool = establish_connection().await;
+        // sqlx test
+        // https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md#changed-10
+        // https://docs.rs/sqlx/latest/sqlx/attr.test.html#automatic-test-database-management-requires-migrate-feature
 
-        // debug test db connection
-        // "SELECT current_database(), current_schema();"
-        // "SELECT datname FROM pg_database;"
-        // "SELECT * FROM pg_catalog.pg_tables; where schemaname = current_schema()"
-        // let row: (String, String) = sqlx::query_as("SELECT datname FROM pg_database;")
-        // .fetch_one(&pool)
-        // .await
-        // .expect("Failed to fetch database info");
-        // println!("Connected to database: {}", row.0);
-        // println!("Current schema: {}", row.1);
-
-        let row = sqlx::query!("SELECT 1 + 1 AS result")
+        let row = sqlx::query!("SELECT name FROM users WHERE name = 'hiro-admin';")
             .fetch_one(&pool)
             .await
             .unwrap();
 
+        dbg!(&row);
+
         // when want to debug variables, use dbg!
         // dbg!(std::env::vars());
         // dbg!(std::env::var("DATABASE_URL").unwrap());
-        let result = row.result;
-        assert_eq!(result, Some(2));
+        let result = row.name;
+        assert_eq!(result, "hiro-admin");
     }
 
-    // pub async fn establish_connection() -> Pool<Postgres> {
-    //     let database_url = "postgresql://localhost:5432/app?user=app&password=passwd";
-    //     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set")
-    //     sqlx::PgPool::connect(&database_url)
-    //         .await
-    //         .expect("Failed to connect to database")
-    // }
+    // since 0.6.1, #[sqlx::test] attribute includes automatic database management, migration(migrate feature is required) and fixture application.
+    // However, it migrations dir is not in the same directory as Cargo.toml, it is necessary to specify the path.
+    // https://docs.rs/sqlx/latest/sqlx/attr.test.html#automatic-migrations-requires-migrate-feature
+    pub static MIGRATOR: sqlx::migrate::Migrator = sqlx::migrate!("../adapter/migrations");
 }
