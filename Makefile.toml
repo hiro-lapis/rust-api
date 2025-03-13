@@ -196,6 +196,11 @@ extend = "set-env-docker"
 command = "docker"
 args = ["compose", "${@}"]
 
+[tasks.compose-up-app]
+extend = "set-env-docker"
+command = "docker"
+args = ["compose", "up", "-d", "app"]
+
 [tasks.compose-up-db]
 extend = "set-env-docker"
 command = "docker"

@@ -7,6 +7,7 @@ license.workspace = true
 
 [dependencies]
 mockall.workspace = true
-
+# sqlx = { workspace = true, features = ["runtime-tokio", "postgres"] }
+sqlx = { version = "0.7.3", features = ["runtime-tokio", "postgres"] }
 [dev-dependencies]
 rstest = "0.25.0"
