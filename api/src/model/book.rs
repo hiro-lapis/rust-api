@@ -101,7 +101,7 @@ const fn default_limit() -> i64 {
     DEFAULT_LIMIT
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PaginatedBookResponse {
     pub total: i64,
@@ -134,7 +134,7 @@ impl From<BookListQuery> for BookListOptions {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")] // for front end, modify field name
 pub struct BookResponse {
     pub id: BookId,
@@ -171,7 +171,7 @@ impl From<Book> for BookResponse {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BookCheckoutResponse {
     pub id: CheckoutId,
