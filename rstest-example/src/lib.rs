@@ -34,7 +34,6 @@ fn test_struct(x: &dyn SampleStruct) -> u32 {
 #[cfg(test)]
 mod tests {
     use rstest::{rstest, fixture};
-    use sqlx::{PgPool, Pool, Postgres};
     use super::*;
     // Run this commands before implementation of test code
     // cargo add rstest mockall --dev
