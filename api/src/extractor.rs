@@ -11,7 +11,7 @@ use shared::error::AppError;
 
 pub struct AuthorizedUser {
     pub access_token: AccessToken,
-    pub user: User
+    pub user: User,
 }
 
 impl AuthorizedUser {
