@@ -33,14 +33,21 @@ content-type: application/json
 
 ###  book index
 
-GET http://localhost:8080/v1/books HTTP/1.1
+GET http://localhost:8080/api/v1/books?limit=1&offset=0 HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+###  book index (error pattern of query parameter)
+
+GET http://localhost:8080/api/v1/books?limit=1&offset=aaa HTTP/1.1
 Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 
 ###  book create
 
-POST http://localhost:8080/v1/books/register HTTP/1.1
+POST http://localhost:8080/api/v1/books HTTP/1.1
+Authorization: Bearer {{accessToken}}
 content-type: application/json
 
 {

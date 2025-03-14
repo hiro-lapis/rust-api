@@ -79,7 +79,7 @@ async fn show_book_list_with_query_200(
 
 #[rstest]
 #[case("/books?limit=-1")]
-#[case("/books?offset=aaa")]
+#[case("/books?offset=aaa")] // aaa expects to occure 400 error
 #[tokio::test]
 async fn show_book_list_with_query_400(
     mut fixture: registry::MockAppRegistryExt,
@@ -120,6 +120,9 @@ async fn show_book_list_with_query_400(
     // 4. リクエストを作成・送信し、レスポンスのステータスコードを検証する
     let req = Request::get(&v1(path)).bearer().body(Body::empty())?;
     let resp = app.oneshot(req).await?;
+
+    // テスト失敗時はdbg!で表示可能
+    // dbg!(&resp);
     // ここまで紙面では省略
     assert_eq!(resp.status(), axum::http::StatusCode::BAD_REQUEST);
 
