@@ -1,8 +1,7 @@
-use kernel::model::book::Book;
-use uuid::Uuid;
+use kernel::model::{book::Book, id::BookId};
 
 pub struct BookRow {
-    pub book_id: Uuid,
+    pub book_id: BookId,
     pub title: String,
     pub author: String,
     pub isbn: String,
@@ -22,7 +21,7 @@ impl From<BookRow> for Book {
             // ..
         } = value;
         Self {
-            id: book_id.into(),
+            id: book_id,
             title,
             author,
             isbn,

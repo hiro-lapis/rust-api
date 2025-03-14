@@ -1,0 +1,44 @@
+@accessToken = {{login.response.body.accessToken}}
+
+###  login
+
+# @name login
+POST http://localhost:8080/auth/login HTTP/1.1
+Authorization: {{accessToken}}
+content-type: application/json
+
+{
+    "email": "elezar.figexample.com",
+    "password": "password"
+}
+
+###  users index
+
+
+GET http://localhost:8080/api/v1/users HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+###  user create
+
+POST http://localhost:8080/api/v1/users HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+{
+    "name": "hiro",
+    "email": "lapis@example.com",
+    "password": "eighthofmarch"
+}
+
+###  book create
+
+POST http://localhost:8080/books/register HTTP/1.1
+content-type: application/json
+
+{
+    "title": "how to develop rust api",
+    "author": "hiro-lapis",
+    "isbn": "4649",
+    "description": "Rust was named for the group of fungi that are over-engineered for survival"
+}

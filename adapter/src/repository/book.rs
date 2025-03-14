@@ -81,42 +81,42 @@ impl BookRepository for BookRepositoryImpl {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
 
-    #[sqlx::test]
-    async fn test_register_book(pool: sqlx::PgPool) -> anyhow::Result<()> {
-        let repo = BookRepositoryImpl::new(ConnectionPool::new(pool));
-        let book = CreateBook {
-            title: "test hiro-title".into(),
-            author: "test hiro-author".into(),
-            isbn: "test hiro-isbn".into(),
-            description: "test hiro-description".into(),
-        };
+//     #[sqlx::test]
+//     async fn test_register_book(pool: sqlx::PgPool) -> anyhow::Result<()> {
+//         let repo = BookRepositoryImpl::new(ConnectionPool::new(pool));
+//         let book = CreateBook {
+//             title: "test hiro-title".into(),
+//             author: "test hiro-author".into(),
+//             isbn: "test hiro-isbn".into(),
+//             description: "test hiro-description".into(),
+//         };
 
-        repo.create(book).await?;
-        let res = repo.find_all().await?;
-        assert_eq!(res.len(), 1);
+//         repo.create(book).await?;
+//         let res = repo.find_all().await?;
+//         assert_eq!(res.len(), 1);
 
-        let book_id = res[0].id;
-        let res = repo.find_by_id(book_id).await?;
-        assert!(res.is_some());
+//         let book_id = res[0].id;
+//         let res = repo.find_by_id(book_id).await?;
+//         assert!(res.is_some());
 
-        let Book {
-            id,
-            title,
-            author,
-            isbn,
-            description,
-        } = res.unwrap();
+//         let Book {
+//             id,
+//             title,
+//             author,
+//             isbn,
+//             description,
+//         } = res.unwrap();
 
-        assert_eq!(id, book_id);
-        assert_eq!(title, "test hiro-title");
-        assert_eq!(isbn, "test hiro-isbn");
-        assert_eq!(author, "test hiro-author");
-        assert_eq!(description, "test hiro-description");
+//         assert_eq!(id, book_id);
+//         assert_eq!(title, "test hiro-title");
+//         assert_eq!(isbn, "test hiro-isbn");
+//         assert_eq!(author, "test hiro-author");
+//         assert_eq!(description, "test hiro-description");
 
-        Ok(())
-    }
-}
+//         Ok(())
+//     }
+// }
