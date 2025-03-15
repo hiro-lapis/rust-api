@@ -1,11 +1,10 @@
 use chrono::{DateTime, Utc};
-use derive_new::new;
 
 use super::id::{BookId, CheckoutId, UserId};
 
 pub mod event;
 
-#[derive(new)]
+#[derive(Debug)]
 pub struct Checkout {
     pub id: CheckoutId,
     pub checked_out_by: UserId,
@@ -14,7 +13,7 @@ pub struct Checkout {
     pub book: CheckoutBook,
 }
 
-#[derive(new)]
+#[derive(Debug)]
 pub struct CheckoutBook {
     pub book_id: BookId,
     pub author: String,
