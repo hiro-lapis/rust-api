@@ -148,7 +148,7 @@ impl From<UpdateUserRoleRequestWithuserId> for UpdateUserRole {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BookOwner {
     pub id: UserId,

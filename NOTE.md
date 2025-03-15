@@ -114,8 +114,8 @@ Q. I sometimes see error, like `error communicating with database: Connection re
 
 A. This error is made by rust-analyzer. Try Ctrl + Shift + P → Rust Analyzer: Restart Server on editor. If the error remain, try `rustup update`, `cargo clean` and restart.  
 
-Q.
-A. 
+Q. What is `Arc<T>` ?
+A. Arc is an abbreviation of Atomically Reference Counted, which enables to share pointer in multi thread process.  
 
 ### Impression
 
