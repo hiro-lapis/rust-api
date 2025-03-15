@@ -32,7 +32,10 @@ Optionally, conducive commands are executable.
 // test
 cargo nextest run
 
-// migration
+// generate migration file
+cargo make gen-migrate
+
+// execute migration
 cargo make migrate
 
 // revert migration

@@ -21,6 +21,9 @@ pub async fn register_book(
     State(registry): State<AppRegistry>,
     Json(req): Json<CreateBookRequest>,
 ) -> Result<StatusCode, AppError> {
+    // validate requst body and return error if invalid
+    req.validate(&())?;
+
     registry
         .book_repository()
         .create(req.into(), user.id())
@@ -35,6 +38,9 @@ pub async fn show_book_list(
     Query(query): Query<BookListQuery>,
     State(registry): State<AppRegistry>,
 ) -> Result<Json<PaginatedBookResponse>, AppError> {
+    // validate query parameter
+    query.validate(&())?;
+
     registry
         .book_repository()
         .find_all(query.into())

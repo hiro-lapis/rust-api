@@ -1,5 +1,7 @@
 -- Add down migration script here
 -- make sure write statements invert order
+DROP IF EXISTS returned_checkouts;
+DROP IF EXISTS checkouts;
 DROP TRIGGER IF EXISTS books_updated_at_trigger;
 DROP IF EXISTS books;
 DROP TRIGGER IF EXISTS users_updated_at_trigger;
