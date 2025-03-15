@@ -34,6 +34,11 @@ pub async fn register_user(
     Ok(Json(registered_user.into()))
 }
 
+#[tracing::instrument(
+    // drop argument from log, and add user_id field to log
+    skip(_user, registry),
+    fields(user_id = %_user.id().to_string(), test = "this is static ".to_string())
+)]
 pub async fn list_users(
     _user: AuthorizedUser,
     State(registry): State<AppRegistry>,
