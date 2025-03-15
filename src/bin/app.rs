@@ -64,6 +64,7 @@ async fn bootstrap() -> Result<()> {
 
     // axum::serve(listener, app).await.unwrap();
     axum::serve(listener, app)
+        .with_graceful_shutdown(shut_down_signal())
         .await
         .context("Unexpected error happened in server")
         .inspect_err(|e| {
@@ -153,4 +154,37 @@ impl FormatTime for JapanTimeFormatter {
             jp_now.second()
         )
     }
+}
+
+async fn shut_down_signal() {
+    fn purge_spans() {
+        global::shutdown_tracer_provider();
+    }
+
+    let ctrl_c = async {
+        tokio::signal::ctrl_c()
+            .await
+            .expect("Failed to install CTRL+C signal handler");
+    };
+    #[cfg(unix)]
+    let terminate = async {
+        tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+            .expect("Failed to install SIGTERM signal handler")
+            .recv()
+            .await
+            .expect("Failed to install SIGTERM signal handler");
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending();
+    tokio::select! {
+        _ = ctrl_c => {
+            tracing::info!("Received Ctrl-C signal");
+        },
+        _ = terminate => {
+            tracing::info!("Received SIGTERM signal");
+        }
+    }
+
+
 }

@@ -1,4 +1,7 @@
-## rust api
+[tasks.compose-up-jaeger]
+extend = "set-env-docker"
+command = "docker"
+args = ["compose", "up", "-d", "jaeger"]## rust api
 
 This repository is the manual copy of [rusty-book-manager](https://github.com/rust-web-app-book/rusty-book-manager).  
 
@@ -47,3 +50,7 @@ cargo mak --loglevel verbose run
 // start creating new crate
 cargo new --lib <crate name>
 ```
+
+### logging
+
+`http://localhost:16686` is serverd as tracing logger by jaeger container.  
