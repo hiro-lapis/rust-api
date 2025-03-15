@@ -109,8 +109,10 @@ A.
 Q. arguments sometimes prefixed with `_`. Why?  
 A. These are unused arguments. To avoid warning by compiler, prefix is used.  
 
-Q.
-A. 
+Q. I sometimes see error, like `error communicating with database: Connection refused (os error 61)`. How to solove it?  
+[image](./img/error-communicating-with-database.png)  
+
+A. This error is made by rust-analyzer. Try Ctrl + Shift + P → Rust Analyzer: Restart Server on editor. If the error remain, try `rustup update`, `cargo clean` and restart.  
 
 Q.
 A. 

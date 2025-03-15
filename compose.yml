@@ -33,6 +33,7 @@ services:
       - ${DATABASE_PORT_OUTER}:${DATABASE_PORT_INNER}
     volumes:
       - db:/var/lib/postgres/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}

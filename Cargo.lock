@@ -1984,6 +1984,7 @@ version = "0.1.0"
 dependencies = [
  "mockall",
  "rstest 0.25.0",
+ "sqlx",
 ]
 
 [[package]]

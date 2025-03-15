@@ -31,9 +31,16 @@ content-type: application/json
     "password": "eighthofmarch"
 }
 
+###  book index
+
+GET http://localhost:8080/v1/books HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+
 ###  book create
 
-POST http://localhost:8080/books/register HTTP/1.1
+POST http://localhost:8080/v1/books/register HTTP/1.1
 content-type: application/json
 
 {
@@ -41,4 +48,18 @@ content-type: application/json
     "author": "hiro-lapis",
     "isbn": "4649",
     "description": "Rust was named for the group of fungi that are over-engineered for survival"
+}
+
+
+### checkout
+
+POST http://localhost:8080/v1/books/{{bookId}} HTTP/1.1
+Authorization: Bearer {{accessToken}}
+content-type: application/json
+
+
+{
+    "name": "hiro",
+    "email": "lapis@example.com",
+    "password": "eighthofmarch"
 }
