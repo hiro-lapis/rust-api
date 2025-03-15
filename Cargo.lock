@@ -2166,6 +2166,7 @@ dependencies = [
  "chrono",
  "opentelemetry",
  "opentelemetry-jaeger",
+ "opentelemetry_sdk",
  "registry",
  "shared",
  "tokio",

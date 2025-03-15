@@ -3,6 +3,7 @@ use anyhow::{Context, Result};
 use api::route::{auth::build_auth_routers, v1};
 use axum::{http::Method, Router};
 use chrono::{Datelike, FixedOffset, Local, Timelike, Utc};
+use opentelemetry::global;
 use registry::AppRegistryImpl;
 use shared::{
     config::AppConfig,
@@ -92,31 +93,38 @@ fn init_logger() -> Result<()> {
         Environment::Development => "debug",
         Environment::Production => "info",
     };
+
+    let host = std::env::var("JAEGER_HOST")?;
+    let port = std::env::var("JAEGER_PORT")?;
+    let end_point = format!("{host}:{port}");
+    global::set_text_map_propagator(opentelemetry_jaeger::Propagator::new());
+
+    // setting of jaeger to visualize metrics
+    let tracer = opentelemetry_jaeger::new_agent_pipeline()
+    .with_endpoint(end_point)
+    .with_service_name("hiro-lapis api")
+    .with_auto_split_batch(true) // break the batch if it exceeds the limit
+    .with_max_packet_size(8192)
+    .install_simple()?;
+
     // set log level
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
-    // set log format
-    // let time_format = time::format_description::parse("[hour]:[minute]:[second]")
-    // .expect("format string should be valid!");
-    // let timer = LocalTime::new(time_format);
-    // let subscriber = tracing_subscriber::fmt()
-    //     .with_timer(timer);
-    //     time::UtcOffset::current_local_offset().unwrap_or_else(|_| time::UtcOffset::UTC);
-    // let timer = fmt::time::OffsetTime::new(time_offset, timer);
+
+    let opentelemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+    // local
     let subscriber = tracing_subscriber::fmt::layer()
         .with_file(true)
         .with_line_number(true)
         .with_timer(JapanTimeFormatter)
-        // .with_timer(JapanTimeFormatter)
         .with_target(false);
-
-    // jsoniize in production
-    #[cfg(not(debug_assertions))]
-    let subscriber = subscriber.josn();
-
+        // jsonize in production
+        #[cfg(not(debug_assertions))]
+        let subscriber = subscriber.json();
     // initialize
     tracing_subscriber::registry()
         .with(subscriber)
         .with(env_filter)
+        .with(opentelemetry)
         .try_init()?;
 
     Ok(())
