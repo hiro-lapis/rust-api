@@ -151,6 +151,11 @@ until sqlx migrate run --source adapter/migrations; do
 done
 '''
 
+[tasks.gen-migrate]
+install_crate = { crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help", version = "0.7.3" }
+command = "sqlx"
+args = ["migrate", "add", "-r", "start", "--source", "adapter/migrations"]
+
 [tasks.sqlx]
 extend = "set-env-local"
 install_crate = { crate_name = "sqlx-cli", binary = "sqlx", test_arg = "--help", version = "0.7.3" }
@@ -190,6 +195,11 @@ args = [
 extend = "set-env-docker"
 command = "docker"
 args = ["compose", "${@}"]
+
+[tasks.compose-up-app]
+extend = "set-env-docker"
+command = "docker"
+args = ["compose", "up", "-d", "app"]
 
 [tasks.compose-up-db]
 extend = "set-env-docker"

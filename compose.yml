@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: docker/rust/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
       network: host
     ports:
       - 8080:${PORT}
@@ -33,12 +35,13 @@ services:
       - ${DATABASE_PORT_OUTER}:${DATABASE_PORT_INNER}
     volumes:
       - db:/var/lib/postgres/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${DATABASE_NAME}"]
+      test: ["CMD", "pg_isready", "-U", "${DATABASE_USERNAME}"]
       interval: 1m30s
       timeout: 30s
       retries: 5

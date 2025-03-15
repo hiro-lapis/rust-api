@@ -148,7 +148,7 @@ impl From<UpdateUserRoleRequestWithuserId> for UpdateUserRole {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BookOwner {
     pub id: UserId,
@@ -160,6 +160,20 @@ impl From<kernel::model::user::BookOwner> for BookOwner {
     fn from(value: kernel::model::user::BookOwner) -> Self {
         let kernel::model::user::BookOwner { id, name } = value;
 
+        Self { id, name }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CheckoutUser {
+    pub id: UserId,
+    pub name: String,
+}
+
+impl From<kernel::model::user::CheckoutUser> for CheckoutUser {
+    fn from(value: kernel::model::user::CheckoutUser) -> Self {
+        let kernel::model::user::CheckoutUser { id, name } = value;
         Self { id, name }
     }
 }

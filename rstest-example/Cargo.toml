@@ -1,0 +1,13 @@
+[package]
+name = "rstest-example"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+license.workspace = true
+
+[dependencies]
+mockall.workspace = true
+# migrate feature for auto migration
+sqlx = { version = "0.7.3", features = ["runtime-tokio", "postgres", "migrate"] }
+[dev-dependencies]
+rstest = "0.25.0"
