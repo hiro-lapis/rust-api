@@ -2163,6 +2163,7 @@ dependencies = [
  "anyhow",
  "api",
  "axum",
+ "chrono",
  "opentelemetry",
  "opentelemetry-jaeger",
  "registry",

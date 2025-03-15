@@ -1,21 +1,26 @@
-use std::{
-    net::{Ipv4Addr, SocketAddr},
-    sync::Arc,
-};
-
 use adapter::{database::connect_database_with, redis::RedisClient};
 use anyhow::{Context, Result};
 use api::route::{auth::build_auth_routers, v1};
 use axum::{http::Method, Router};
+use chrono::{Datelike, FixedOffset, Local, Timelike, Utc};
 use registry::AppRegistryImpl;
 use shared::{
     config::AppConfig,
     env::{which, Environment},
 };
+use std::fmt;
+use std::{
+    net::{Ipv4Addr, SocketAddr},
+    sync::Arc,
+};
 use tokio::net::TcpListener;
 use tower_http::trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer};
-use tower_http::{LatencyUnit, cors::{self, CorsLayer}};
+use tower_http::{
+    cors::{self, CorsLayer},
+    LatencyUnit,
+};
 use tracing::Level;
+use tracing_subscriber::fmt::{format::Writer, time::FormatTime};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 // TODO: try to implement this api
@@ -90,11 +95,24 @@ fn init_logger() -> Result<()> {
     // set log level
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
     // set log format
+    // let time_format = time::format_description::parse("[hour]:[minute]:[second]")
+    // .expect("format string should be valid!");
+    // let timer = LocalTime::new(time_format);
+    // let subscriber = tracing_subscriber::fmt()
+    //     .with_timer(timer);
+    //     time::UtcOffset::current_local_offset().unwrap_or_else(|_| time::UtcOffset::UTC);
+    // let timer = fmt::time::OffsetTime::new(time_offset, timer);
     let subscriber = tracing_subscriber::fmt::layer()
         .with_file(true)
         .with_line_number(true)
-        .with_target(false)
-        .json();
+        .with_timer(JapanTimeFormatter)
+        // .with_timer(JapanTimeFormatter)
+        .with_target(false);
+
+    // jsoniize in production
+    #[cfg(not(debug_assertions))]
+    let subscriber = subscriber.josn();
+
     // initialize
     tracing_subscriber::registry()
         .with(subscriber)
@@ -107,11 +125,24 @@ fn init_logger() -> Result<()> {
 fn cors() -> CorsLayer {
     CorsLayer::new()
         .allow_headers(cors::Any)
-        .allow_methods([
-            Method::GET,
-            Method::POST,
-            Method::PUT,
-            Method::DELETE,
-        ])
+        .allow_methods([Method::GET, Method::POST, Method::PUT, Method::DELETE])
         .allow_origin(cors::Any)
+}
+
+struct JapanTimeFormatter;
+
+impl FormatTime for JapanTimeFormatter {
+    fn format_time(&self, w: &mut Writer<'_>) -> fmt::Result {
+        let jp_now = Utc::now().with_timezone(FixedOffset::east_opt(9 * 3600).as_ref().unwrap());
+        write!(
+            w,
+            "{}年{}月{}日 {}:{}:{}",
+            jp_now.year(),
+            jp_now.month(),
+            jp_now.day(),
+            jp_now.hour(),
+            jp_now.minute(),
+            jp_now.second()
+        )
+    }
 }

@@ -12,7 +12,7 @@ pub fn concat(left: &String, right: &String) -> String {
 pub fn main() {
     let mut mock = MockSampleStruct::new();
     // set mock return value of add_ten function
-    mock.expect_add_ten().returning(|v|  v +10);
+    mock.expect_add_ten().returning(|v| v + 10);
 
     println!("env var is {}", std::env::var("DATABASE_USERNAME").unwrap());
 
@@ -21,7 +21,7 @@ pub fn main() {
 
 #[automock]
 trait SampleStruct {
-    fn add_ten(&self, x:u32) -> u32;
+    fn add_ten(&self, x: u32) -> u32;
 }
 
 // normally, traits cannot be an argument type, but dynamically resolved by mockall
@@ -33,8 +33,8 @@ fn test_struct(x: &dyn SampleStruct) -> u32 {
 
 #[cfg(test)]
 mod tests {
-    use rstest::{rstest, fixture};
     use super::*;
+    use rstest::{fixture, rstest};
     // Run this commands before implementation of test code
     // cargo add rstest mockall --dev
     // cargo add cargo-expand
@@ -63,7 +63,7 @@ mod tests {
     #[rstest]
     #[case(10, 5, 15)]
     #[case(200, 15, 215)]
-    fn it_works_with_pameters(#[case] a: u64,#[case] b: u64,#[case] expected: u64) {
+    fn it_works_with_pameters(#[case] a: u64, #[case] b: u64, #[case] expected: u64) {
         let _result = add(a, b);
         assert_eq!(_result, expected);
     }
@@ -71,7 +71,7 @@ mod tests {
     #[sqlx::test]
     async fn it_works_with_sqlx(pool: sqlx::PgPool) {
         let row = sqlx::query!("SELECT 1 + 1 AS result")
-        // let row = sqlx::query!("SELECT COUNT(*) FROM books;")
+            // let row = sqlx::query!("SELECT COUNT(*) FROM books;")
             .fetch_one(&pool)
             .await
             .unwrap();
