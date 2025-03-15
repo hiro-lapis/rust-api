@@ -2,7 +2,7 @@ use adapter::{database::connect_database_with, redis::RedisClient};
 use anyhow::{Context, Result};
 use api::route::{auth::build_auth_routers, v1};
 use axum::{http::Method, Router};
-use chrono::{Datelike, FixedOffset, Local, Timelike, Utc};
+use chrono::{Datelike, FixedOffset, Timelike, Utc};
 use opentelemetry::global;
 use registry::AppRegistryImpl;
 use shared::{
@@ -180,9 +180,11 @@ async fn shut_down_signal() {
     tokio::select! {
         _ = ctrl_c => {
             tracing::info!("Received Ctrl-C signal");
+            purge_spans();
         },
         _ = terminate => {
             tracing::info!("Received SIGTERM signal");
+            purge_spans();
         }
     }
 
