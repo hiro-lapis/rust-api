@@ -24,6 +24,13 @@ use tracing::Level;
 use tracing_subscriber::fmt::{format::Writer, time::FormatTime};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
+#[cfg(debug_assertions)]
+use api::openapi::ApiDoc;
+#[cfg(debug_assertions)]
+use utopia::OpenApi;
+#[cfg(debug_assertions)]
+use utoipa_redoc::Redoc;
+
 // TODO: try to implement this api
 // handler
 // async fn lapis() -> &'static str {
@@ -57,6 +64,10 @@ async fn bootstrap() -> Result<()> {
                 ),
         )
         .with_state(registry);
+
+    #[cfg(debug_assertions)]
+    let app = app.merge(Redoc::with_url("/docs", ApiDoc::openapi()));
+
     let addr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080);
 
     let listener = TcpListener::bind(addr).await?;

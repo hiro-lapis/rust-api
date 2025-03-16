@@ -68,7 +68,7 @@ registry.workspace = true
 anyhow.workspace = true
 axum.workspace = true
 utoipa.workspace = true
-utoipa-redoc.workspace = true
+utoipa-redoc = { version = "2.0.0", features = ["axum"] }
 tokio.workspace = true
 tracing.workspace = true
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
@@ -77,5 +77,6 @@ tracing-opentelemetry = "0.22.0"
 opentelemetry-jaeger = { version = "0.20.0", features = ["rt-tokio"] }
 opentelemetry_sdk = { version= "0.21.2", features = ["rt-tokio"] }
 chrono.workspace = true
+
 [profile.dev.package.sqlx-macros]
 opt-level = 3
