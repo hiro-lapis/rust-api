@@ -46,7 +46,6 @@ impl AppRegistryImpl {
             checkout_repository,
         }
     }
-
 }
 
 #[mockall::automock]
