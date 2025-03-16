@@ -82,6 +82,7 @@ extend = "set-env-local"
 dependencies = ["before-build"]
 command = "cargo"
 args = ["build", "${@}"]
+# In release, run cargo make build --release
 
 [tasks.check]
 extend = "set-env-local"
