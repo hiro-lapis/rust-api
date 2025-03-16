@@ -117,6 +117,18 @@ A. This error is made by rust-analyzer. Try Ctrl + Shift + P → Rust Analyzer: 
 Q. What is `Arc<T>` ?
 A. Arc is an abbreviation of Atomically Reference Counted, which enables to share pointer in multi thread process.  
 
+Q. Rust has edition apart from version such as 2024 edition. What is edition and difference?  
+A. Edition is destructive changes. While rust assure compatibility between previos version, some big changes are not compatible. Those changes are released by new edition. In this way, existing apps can update version safely and take time to include new edition's feature. See [here](https://doc.rust-jp.rs/edition-guide/editions/index.html).  
+
+Q. What is the difference between `cargo add` and `cargo install`?  
+A. `cargo install` command install binary tool that used for general purpose globally, which doesn't affect rust projects. `cargo add` add library in a project and the dependency is written down in cargo.toml.  
+
+Q. In api container, I cannot find rust, such as when I command `rustc --version`, the command is not found. Why?  
+A. This is because api container doesn't have rust tool chains. This enviroment applies multi stage build, which is a docker's method separate build environment and running environment. Thus, if I want to use rust dependencies in api container, I have to cease multi stage build. That being said, Most case doesn't need to run rust command in the container after build stage.  
+
+Q. 
+A. 
+
 ### Impression
 
 - Rust has many features, some of them cannot be seen in other languages, such as ownership,  
