@@ -1,3 +1,10 @@
+#[cfg(debug_assertions)]
+use api::openapi::ApiDoc;
+#[cfg(debug_assertions)]
+use utoipa::OpenApi;
+#[cfg(debug_assertions)]
+use utoipa_redoc::{Redoc, Servable};
+
 use adapter::{database::connect_database_with, redis::RedisClient};
 use anyhow::{Context, Result};
 use api::route::{auth::build_auth_routers, v1};
@@ -24,12 +31,6 @@ use tracing::Level;
 use tracing_subscriber::fmt::{format::Writer, time::FormatTime};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-#[cfg(debug_assertions)]
-use api::openapi::ApiDoc;
-#[cfg(debug_assertions)]
-use utopia::OpenApi;
-#[cfg(debug_assertions)]
-use utoipa_redoc::Redoc;
 
 // TODO: try to implement this api
 // handler

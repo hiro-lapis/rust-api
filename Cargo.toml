@@ -80,3 +80,7 @@ chrono.workspace = true
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3
+
+[profile.dev]
+# When you want to disable #[cfg(debug_assertions)], uncomment out below
+# debug-assertions = false
