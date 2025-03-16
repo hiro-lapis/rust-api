@@ -54,3 +54,5 @@ cargo new --lib <crate name>
 ### logging
 
 `http://localhost:16686` is serverd as tracing logger by jaeger container.  
+
+`http://127.0.0.1:8080/docs` is served as OpenApi docs

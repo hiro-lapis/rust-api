@@ -1,6 +1,9 @@
 use kernel::model::id::UserId;
 use serde::{Deserialize, Serialize};
+#[cfg(debug_assertions)]
+use utoipa::ToSchema;
 
+#[cfg_attr(debug_assertions, derive(ToSchema))]
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")] // for front end, modify field name
 pub struct LoginRequest {
@@ -8,6 +11,7 @@ pub struct LoginRequest {
     pub password: String,
 }
 
+#[cfg_attr(debug_assertions, derive(ToSchema))]
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")] // for front end, modify field name
 pub struct AccessTokenResponse {
