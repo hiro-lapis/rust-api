@@ -68,7 +68,7 @@ registry.workspace = true
 anyhow.workspace = true
 axum.workspace = true
 utoipa.workspace = true
-utoipa-redoc = { version = "2.0.0", features = ["axum"] }
+utoipa-redoc.workspace = true
 tokio.workspace = true
 tracing.workspace = true
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
