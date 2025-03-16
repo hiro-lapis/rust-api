@@ -20,7 +20,7 @@ license = "MIT"
 
 
 [workspace.dependencies]
-# registering dependencies
+# registering sharable dependencies for main and subordinates
 adapter = { path = "./adapter" }
 api = { path = "./api" }
 kernel = { path = "./kernel" }
@@ -32,6 +32,7 @@ anyhow = "1.0.75"
 axum = { version = "0.7.5", features = ["macros"] }
 derive-new = "0.6.0"
 utoipa = { version = "4.1.0", features = ["axum_extras", "uuid", "chrono"] }
+utoipa-redoc = { version = "2.0.0", features = ["axum"] }
 chrono = { version = "0.4.26", default-features = false, features = ["serde"] }
 uuid = { version = "1.4.0", features = ["v4", "serde"] }
 serde = { version = "1.0.174", features = ["derive"] }
@@ -58,6 +59,7 @@ tokio-stream = "0.1.14"
 garde = { version = "0.18.0", features = ["derive", "email"] }
 
 [dependencies]
+# enable libraries on this main crate
 tower-http = { version = "0.5.0", features = ["cors", "trace"] }
 adapter.workspace = true
 api.workspace = true
@@ -66,7 +68,7 @@ registry.workspace = true
 anyhow.workspace = true
 axum.workspace = true
 utoipa.workspace = true
-utoipa-redoc = { version = "2.0.0", features = ["axum"] }
+utoipa-redoc.workspace = true
 tokio.workspace = true
 tracing.workspace = true
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
