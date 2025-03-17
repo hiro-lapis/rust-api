@@ -8,6 +8,30 @@
 
 - https://nodejs.org/en/download/package-manager
 
+## 環境変数ファイルの設定
+
+APIとの疎通に環境変数が必要なので下記コマンドを実行  
+
+```
+cp sample.env.local .env
+```
+
+### 
+
+ログイン画面にて [net::ERR_EMPTY_RESPONSE](img/front-end-request-error.png) というエラーが出た場合は環境変数を下記のように書き換えましょう。  
+
+```
+- API_ROOT_URL=localhost
++ API_ROOT_URL=0.0.0.0
+```
+
+APIコンテナでLISTENしているlocalhostが端末それ自体のlocalhostと繋がってないため名前解決できず発生しています。  
+フロントエンドアプリケーションは 0.0.0.0 でLISTENすると解決できます。  
+[参考記事](https://qiita.com/amuyikam/items/01a8c16e3ddbcc734a46)  
+
+＊あくまで開発環境での設定です。リモート環境においてはインフラの設定に合わせてドメインを指定するようにしましょう。  
+
+
 ## 画面の立ち上げ
 
 ローカルで立ち上げる場合、次の手順で立ち上がります。

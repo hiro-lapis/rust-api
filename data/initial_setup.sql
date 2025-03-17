@@ -11,7 +11,7 @@ INSERT INTO
     users (name, email, password_hash, role_id)
 SELECT
     'Elezar Fig',
-    'elezar.figexample.com',
+    'elezar.fig@example.com',
     '$2b$12$GFf.eB7OpIcB3hpCr/JhoOOVPHQ0YE9oLnDA0KyHq7oGBvAFospLK',
     role_id
 FROM

@@ -8,7 +8,7 @@ Authorization: {{accessToken}}
 content-type: application/json
 
 {
-    "email": "elezar.figexample.com",
+    "email": "elezar.fig@example.com",
     "password": "password"
 }
 
