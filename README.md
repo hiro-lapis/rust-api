@@ -51,6 +51,12 @@ cargo mak --loglevel verbose run
 cargo new --lib <crate name>
 ```
 
+Also, common commands are usable.  
+
+```
+docker container exec -it rust-api-app-1 bash
+```
+
 ### logging
 
 `http://localhost:16686` is serverd as tracing logger by jaeger container.  
