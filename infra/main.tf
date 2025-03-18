@@ -64,3 +64,13 @@ module "iam" {
   book_app_db_subnet_arns      = module.network.book_app_db_subnet_arns
   book_app_private_subnet_arns = module.network.book_app_private_subnet_arns
 }
+
+module "codebuild" {
+  source                               = "./codebuild"
+  book_app_secrets_manager_arn         = module.secrets.book_app_secrets_manager_arn
+  book_app_vpc_id                      = module.network.book_app_vpc_id
+  book_app_codebuild_subnet_ids        = module.network.book_app_private_subnet_ids
+  book_app_db_security_group_id        = module.network.book_app_db_security_group_id
+  book_app_codebuild_security_group_id = module.network.book_app_codebuild_security_group_id
+  book_app_service_role_arn            = module.iam.codebuild_service_role_arn
+}
