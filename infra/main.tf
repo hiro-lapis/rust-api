@@ -45,6 +45,10 @@ module "middleware" {
   book_app_redis_subnet_group_name         = module.network.book_app_redis_subnet_group_name
 }
 
+module "secrets" {
+  source = "./secrets"
+}
+
 module "iam" {
   source                       = "./iam"
   book_app_db_subnet_arns      = module.network.book_app_db_subnet_arns
