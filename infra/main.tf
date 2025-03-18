@@ -34,3 +34,9 @@ provider "aws" {
 module "network" {
     source = "./network"
 }
+
+module "iam" {
+  source                       = "./iam"
+  book_app_db_subnet_arns      = module.network.book_app_db_subnet_arns
+  book_app_private_subnet_arns = module.network.book_app_private_subnet_arns
+}
