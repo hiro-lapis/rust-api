@@ -35,6 +35,16 @@ module "network" {
     source = "./network"
 }
 
+module "middleware" {
+  source                                   = "./middleware"
+  book_app_db_subnet_group_name            = module.network.book_app_db_subnet_group_name
+  book_app_db_security_group_id            = module.network.book_app_db_security_group_id
+  book_app_redis_security_group_id         = module.network.book_app_redis_security_group_id
+  book_app_vpc_connector_security_group_id = module.network.book_app_vpc_connector_security_group_id
+  book_app_codebuild_security_group_id     = module.network.book_app_codebuild_security_group_id
+  book_app_redis_subnet_group_name         = module.network.book_app_redis_subnet_group_name
+}
+
 module "iam" {
   source                       = "./iam"
   book_app_db_subnet_arns      = module.network.book_app_db_subnet_arns
