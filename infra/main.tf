@@ -49,6 +49,16 @@ module "secrets" {
   source = "./secrets"
 }
 
+module "app" {
+  source                        = "./app"
+  book_app_vpc_id               = module.network.book_app_vpc_id
+  book_app_db_subnet_ids        = module.network.book_app_db_subnet_ids
+  book_app_vpc_connector_sg_id  = module.network.book_app_vpc_connector_security_group_id
+  book_app_secrets_manager_arn  = module.secrets.book_app_secrets_manager_arn
+  apprunner_instance_role_arn   = module.iam.apprunner_instance_role_arn
+  apprunner_ecr_access_role_arn = module.iam.apprunner_ecr_access_role_arn
+}
+
 module "iam" {
   source                       = "./iam"
   book_app_db_subnet_arns      = module.network.book_app_db_subnet_arns
