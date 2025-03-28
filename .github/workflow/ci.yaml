@@ -1,6 +1,7 @@
 name: CI for api
 on:
-  push: brances[main]
+  push:
+    branches: [main]
   pull_request:
     paths-ignore:
       - "README.md"
@@ -22,9 +23,11 @@ jobs:
       # 4 install cargo-make, cargo-nextest
       - name: Install cargo-related tools
         uses: taiki-e/install-action@v2
+        with:
+          tool: nextest,cargo-make,cargo-machete
       # 5 build entirely
       - name: Tests compile
-        run: cargo make test-ci --no-run ----locked
+        run: cargo make test-ci --no-run --locked
       # 6
       - name: Test
         run: cargo make test-ci
@@ -34,3 +37,5 @@ jobs:
       # 8 formatter
       - name: Rustfmt
         run: cargo make fmt -- --check
+      - name: Check unused dependencies
+        run: cargo machete
