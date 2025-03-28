@@ -227,3 +227,13 @@ args = ["compose", "down"]
 extend = "set-env-docker"
 command = "docker"
 args = ["compose", "down", "-v"]
+
+# for Github Actions ECR build
+[tasks.ecr-build]
+extend = "set-env-local"
+command = "docker"
+args = [
+  "build", "-t", "backend:latest",
+  "--build-arg", "BUILDKIT_INLINE_CACHE=1",
+  "."
+]
