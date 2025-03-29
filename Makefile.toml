@@ -134,7 +134,6 @@ args = [
 
 [tasks.clippy-ci]
 dependencies = ["before-build"]
-run_task = "clippy"
 command = "cargo"
 args = ["clippy", "--", "--no-deps", "-Dwarnings"]
 
