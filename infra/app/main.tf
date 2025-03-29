@@ -16,7 +16,7 @@ resource "aws_ecr_lifecycle_policy" "backend_repository_lifecycle" {
                 "tagStatus": "untagged",
                 "countType": "sinceImagePushed",
                 "countUnit": "days",
-                "countNumber":7 
+                "countNumber":7
             },
             "action": {
                 "type": "expire"
@@ -83,4 +83,3 @@ resource "aws_apprunner_vpc_connector" "backend_book_manager" {
   subnets            = var.book_app_db_subnet_ids
   security_groups    = [var.book_app_vpc_connector_sg_id]
 }
-
