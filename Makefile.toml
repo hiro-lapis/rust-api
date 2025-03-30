@@ -143,6 +143,7 @@ run_task = [
 ]
 
 [tasks.clippy-ci]
+extend = "set-env-local"
 dependencies = ["before-build-ci"]
 command = "cargo"
 args = ["clippy", "--", "--no-deps", "-Dwarnings"]
