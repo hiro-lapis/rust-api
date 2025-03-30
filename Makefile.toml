@@ -17,8 +17,6 @@ REDIS_PORT_OUTER = 6379
 REDIS_PORT_INNER = 6379
 AUTH_TOKEN_TTL = 86400
 
-# SQLX_OFFLINE=true
-
 # env for docker compose network
 [tasks.set-env-docker.env]
 DATABASE_HOST = "postgres"
