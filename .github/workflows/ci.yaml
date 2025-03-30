@@ -6,9 +6,6 @@ on:
     paths-ignore:
       - "README.md"
       - "frontend/**"
-env:
-  # skip connecting to the database for step 7
-  SQLX_OFFLINE: true
 jobs:
   check:
     name: Check
