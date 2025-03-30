@@ -17,6 +17,8 @@ REDIS_PORT_OUTER = 6379
 REDIS_PORT_INNER = 6379
 AUTH_TOKEN_TTL = 86400
 
+SQLX_OFFLINE=true
+
 # env for docker compose network
 [tasks.set-env-docker.env]
 DATABASE_HOST = "postgres"
@@ -132,13 +134,23 @@ args = [
   "--status-level", "all", "--test-threads=1", "--no-tests=pass",
 ]
 
+# set up for clippy to check sqlx in ci
+[tasks.before-build-ci]
+run_task = [
+    { name = [
+        "compose-up-db",
+        "migrate",
+        "compose-up-redis",
+    ] },
+]
+
 [tasks.clippy-ci]
-dependencies = ["before-build"]
+dependencies = ["before-build-ci"]
 command = "cargo"
 args = ["clippy", "--", "--no-deps", "-Dwarnings"]
 
 [tasks.test-ci]
-dependencies = ["before-build"]
+dependencies = ["before-build-ci"]
 run_task = "test"
 
 # migration
