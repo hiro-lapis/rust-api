@@ -15,10 +15,6 @@ RUN cargo chef cook --release --recipe-path recipe.json
 # FROM rust:1.84-slim-bookworm AS builder
 # WORKDIR /app
 
-# set env
-ARG DATABASE_URL
-ENV DATABASE_URL=${DATABASE_URL}
-
 # copy all (include env setting)
 COPY . .
 RUN cargo build --release
@@ -31,6 +27,9 @@ RUN adduser book && chown -R book /app
 USER book
 COPY --from=builder ./app/target/release/app ./target/release/app
 
+# set env
+ARG DATABASE_URL
+ENV DATABASE_URL=${DATABASE_URL}
 ENV PORT 8080
 EXPOSE $PORT
 ENTRYPOINT [ "./target/release/app" ]
