@@ -101,7 +101,7 @@ impl AuthorizedUserId {
 ```
 
 Q. What is New type pattern ?
-A. 
+A. プリミティブな型に独自の型をつける機能。bookId, UserId, どちらも同じUUID型だとして、独自の型づけをすることで変数の渡し間違いを防ぐことができる
 
 Q. Sometimes `type Error = AppError;` can be seen in structs' `impl` while cannot be seen the type defnition. What or why is the difference?
 A. 
@@ -113,6 +113,10 @@ Q. I sometimes see error, like `error communicating with database: Connection re
 [image](./img/error-communicating-with-database.png)  
 
 A. This error is made by rust-analyzer. Try Ctrl + Shift + P → Rust Analyzer: Restart Server on editor. If the error remain, try `rustup update`, `cargo clean` and restart.  
+
+Q. On CI/CD environment, clippy-ci ends in failure of `error: error communicating with database: failed to lookup address information: Temporary failure in name resolution`, because the process cannot access database. How to solve it?
+
+A. Use [off-line mode](error: error communicating with database: failed to lookup address information: Temporary failure in name resolution). First, add [`SQLX_OFFLINE=true`](https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md#force-building-in-offline-mode) in the environment, which makes sqlx run without accessing database. Then execute `cargo sqlx prepare`, which generate cache(`.sqlx/`) that contains database information. The cache can be used for clippy's check.
 
 Q. What is `Arc<T>` ?
 A. Arc is an abbreviation of Atomically Reference Counted, which enables to share pointer in multi thread process.  

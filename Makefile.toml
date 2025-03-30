@@ -132,14 +132,23 @@ args = [
   "--status-level", "all", "--test-threads=1", "--no-tests=pass",
 ]
 
+# set up for clippy to check sqlx in ci
+[tasks.before-build-ci]
+run_task = [
+    { name = [
+        "compose-up-db",
+        "migrate",
+        "compose-up-redis",
+    ] },
+]
+
 [tasks.clippy-ci]
-dependencies = ["before-build"]
-run_task = "clippy"
+dependencies = ["before-build-ci"]
 command = "cargo"
 args = ["clippy", "--", "--no-deps", "-Dwarnings"]
 
 [tasks.test-ci]
-dependencies = ["before-build"]
+dependencies = ["before-build-ci"]
 run_task = "test"
 
 # migration
@@ -235,5 +244,6 @@ command = "docker"
 args = [
   "build", "-t", "backend:latest",
   "--build-arg", "BUILDKIT_INLINE_CACHE=1",
+  "-f", "docker/rust/Dockerfile",
   "."
 ]
