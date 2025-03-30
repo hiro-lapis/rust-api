@@ -31,7 +31,6 @@ use tracing::Level;
 use tracing_subscriber::fmt::{format::Writer, time::FormatTime};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
-
 // TODO: try to implement this api
 // handler
 // async fn lapis() -> &'static str {
@@ -114,11 +113,11 @@ fn init_logger() -> Result<()> {
 
     // setting of jaeger to visualize metrics
     let tracer = opentelemetry_jaeger::new_agent_pipeline()
-    .with_endpoint(end_point)
-    .with_service_name("hiro-lapis api")
-    .with_auto_split_batch(true) // break the batch if it exceeds the limit
-    .with_max_packet_size(8192)
-    .install_simple()?;
+        .with_endpoint(end_point)
+        .with_service_name("hiro-lapis api")
+        .with_auto_split_batch(true) // break the batch if it exceeds the limit
+        .with_max_packet_size(8192)
+        .install_simple()?;
 
     // set log level
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
@@ -130,9 +129,9 @@ fn init_logger() -> Result<()> {
         .with_line_number(true)
         .with_timer(JapanTimeFormatter)
         .with_target(false);
-        // jsonize in production
-        #[cfg(not(debug_assertions))]
-        let subscriber = subscriber.json();
+    // jsonize in production
+    #[cfg(not(debug_assertions))]
+    let subscriber = subscriber.json();
     // initialize
     tracing_subscriber::registry()
         .with(subscriber)
@@ -199,6 +198,4 @@ async fn shut_down_signal() {
             purge_spans();
         }
     }
-
-
 }
