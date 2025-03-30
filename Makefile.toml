@@ -140,7 +140,6 @@ run_task = [
     { name = [
         "compose-up-db",
         "migrate",
-        "sqlx-prepare",
         "compose-up-redis",
     ] },
 ]
