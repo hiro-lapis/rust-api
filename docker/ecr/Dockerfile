@@ -14,6 +14,9 @@ COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 # copy all (without env setting)
 COPY . .
+# enable offline mode to compile sqlx code without db connection
+ENV SQLX_OFFLINE=true
+RUN cargo build --release
 
 FROM debian:bookworm-slim
 # workdir setting needs on each FROM
