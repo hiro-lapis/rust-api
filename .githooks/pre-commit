@@ -1,9 +1,17 @@
 #!/bin/sh
 
-# server/ 配下に変更があるか
+# update .sqlx on migration and repository changed adapter
 if git diff --quiet --exit-code  -- ./adapter; then
   echo "Running change db schema information ..."
-#   cargo sqlx prepare > /dev/null 2>&1; git add .sqlx > /dev/null
+  cargo sqlx prepare > /dev/null 2>&1; git add .sqlx > /dev/null
 else
-  echo "No changes detected in ./adapter"
+  echo " Nochanges detected in ./adapter"
 fi
+
+# if git diff --quiet --exit-code -- ./src; then
+#     echo "Running cargo fmt and clippy..."
+#     cargo fmt
+#     cargo clippy --fix
+# else
+#     echo "No changes detected in ./src"
+# fi
