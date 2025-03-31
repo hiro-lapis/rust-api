@@ -9,8 +9,7 @@ img/
 rust-toolchain.toml
 Makefile.toml
 compose.yml
-.cargo/
-infra/
-docker/
-frontend/
-target/
+infra
+docker
+frontend
+target
