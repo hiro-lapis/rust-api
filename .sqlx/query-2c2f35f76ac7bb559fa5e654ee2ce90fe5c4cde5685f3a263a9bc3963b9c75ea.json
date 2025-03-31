@@ -1,0 +1,29 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    COUNT(*) OVER() AS \"total!\",\n                    b.book_id AS id\n                FROM books AS b\n                ORDER BY b.created_at DESC\n                LIMIT $1\n                OFFSET $2\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "total!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null,
+      false
+    ]
+  },
+  "hash": "2c2f35f76ac7bb559fa5e654ee2ce90fe5c4cde5685f3a263a9bc3963b9c75ea"
+}
