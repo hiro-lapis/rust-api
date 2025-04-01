@@ -7,8 +7,6 @@ locals {
     DATABASE_PASSWORD = "fill_your_db_password"
     REDIS_HOST        = "fill_your_redist_host"
     REDIS_PORT        = 6379
-    JAEGER_HOST       = "fill_your_jaeger_host"
-    JAEGER_PORT       = 6831
   }
 }
 

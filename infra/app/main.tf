@@ -52,8 +52,6 @@ resource "aws_apprunner_service" "backend_book_manager" {
           DATABASE_USERNAME = "${var.book_app_secrets_manager_arn}:DATABASE_USERNAME::"
           REDIS_HOST        = "${var.book_app_secrets_manager_arn}:REDIS_HOST::"
           REDIS_PORT        = "${var.book_app_secrets_manager_arn}:REDIS_PORT::"
-          JAEGER_HOST       = "${var.book_app_secrets_manager_arn}:JAEGER_HOST::"
-          JAEGER_PORT       = "${var.book_app_secrets_manager_arn}:JAEGER_PORT::"
         }
       }
       image_identifier      = "${aws_ecr_repository.backend_repository.repository_url}:latest"
