@@ -106,23 +106,9 @@ fn init_logger() -> Result<()> {
         Environment::Production => "info",
     };
 
-    let host = std::env::var("JAEGER_HOST")?;
-    let port = std::env::var("JAEGER_PORT")?;
-    let end_point = format!("{host}:{port}");
-    global::set_text_map_propagator(opentelemetry_jaeger::Propagator::new());
-
-    // setting of jaeger to visualize metrics
-    let tracer = opentelemetry_jaeger::new_agent_pipeline()
-        .with_endpoint(end_point)
-        .with_service_name("hiro-lapis api")
-        .with_auto_split_batch(true) // break the batch if it exceeds the limit
-        .with_max_packet_size(8192)
-        .install_simple()?;
-
     // set log level
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
 
-    let opentelemetry = tracing_opentelemetry::layer().with_tracer(tracer);
     // local
     let subscriber = tracing_subscriber::fmt::layer()
         .with_file(true)
@@ -132,13 +118,37 @@ fn init_logger() -> Result<()> {
     // jsonize in production
     #[cfg(not(debug_assertions))]
     let subscriber = subscriber.json();
+
     // initialize
-    let mut registry = tracing_subscriber::registry()
-        .with(subscriber)
-        .with(env_filter);
+    #[cfg(debug_assertions)]
+    {
+        let host = std::env::var("JAEGER_HOST")?;
+        let port = std::env::var("JAEGER_PORT")?;
+        let end_point = format!("{host}:{port}");
+        global::set_text_map_propagator(opentelemetry_jaeger::Propagator::new());
+
+        // setting of jaeger to visualize metrics
+        let tracer = opentelemetry_jaeger::new_agent_pipeline()
+            .with_endpoint(end_point)
+            .with_service_name("hiro-lapis api")
+            .with_auto_split_batch(true) // break the batch if it exceeds the limit
+            .with_max_packet_size(8192)
+            .install_simple()?;
+        let opentelemetry = tracing_opentelemetry::layer().with_tracer(tracer);
+        tracing_subscriber::registry()
+            .with(subscriber)
+            .with(env_filter)
+            .with(opentelemetry)
+            .try_init()?;
+    }
+
     #[cfg(not(debug_assertions))]
-    let registry = registry.with(opentelemetry);
-    registry.try_init()?;
+    {
+        tracing_subscriber::registry()
+            .with(subscriber)
+            .with(env_filter)
+            .try_init()?;
+    }
 
     Ok(())
 }
