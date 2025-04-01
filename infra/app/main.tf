@@ -1,7 +1,7 @@
 # ECR
 
 resource "aws_ecr_repository" "backend_repository" {
-  name = "book-manager-backend"
+  name = "rust-api"
 }
 
 resource "aws_ecr_lifecycle_policy" "backend_repository_lifecycle" {
