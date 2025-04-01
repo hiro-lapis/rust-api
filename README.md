@@ -11,6 +11,12 @@ This repository is the manual copy of [rusty-book-manager](https://github.com/ru
 docker compose up -d --build
 ```
 
+Next, run below command to enable precommit hook to update db schema information automatically for sqlx macros.  
+
+```
+git config --local core.hooksPath .githooks
+```
+
 each task defined in Makefile.toml can be excuted by `cargo make run`  
 Note that `cargo run` seems to work, but fails in reading env vars.  
 

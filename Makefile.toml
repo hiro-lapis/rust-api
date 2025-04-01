@@ -245,6 +245,6 @@ command = "docker"
 args = [
   "build", "-t", "backend:latest",
   "--build-arg", "BUILDKIT_INLINE_CACHE=1",
-  "-f", "docker/rust/Dockerfile",
+  "-f", "./docker/ecr/Dockerfile",
   "."
 ]

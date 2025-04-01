@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                    SELECT\n                        c.checkout_id,\n                        c.book_id,\n                        c.user_id,\n                        c.checked_out_at,\n                        b.title,\n                        b.author,\n                        b.isbn\n                        FROM checkouts AS c\n                        INNER JOIN books AS b\n                            USING(book_id)\n                        WHERE c.book_id = $1\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "checkout_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "book_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "user_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "checked_out_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 4,
+        "name": "title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "author",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "isbn",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2e2cf322410416ca29e3ae1b98330fe25f01c90407de64df0225f034efd1cea2"
+}
