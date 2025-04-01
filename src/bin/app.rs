@@ -133,12 +133,11 @@ fn init_logger() -> Result<()> {
     #[cfg(not(debug_assertions))]
     let subscriber = subscriber.json();
     // initialize
-    let mut registry = tracing_subscriber::registry()
+    tracing_subscriber::registry()
         .with(subscriber)
-        .with(env_filter);
-    #[cfg(not(debug_assertions))]
-    let registry = registry.with(opentelemetry);
-    registry.try_init()?;
+        .with(env_filter)
+        .with(opentelemetry)
+        .try_init()?;
 
     Ok(())
 }
