@@ -28,4 +28,4 @@ COPY --from=builder ./app/target/release/app ./target/release/app
 # skip setting env
 # env is preset in infra/app/main.tf and infra/secrets/main.tf
 EXPOSE 8080
-ENTRYPOINT [ "./app/target/release/app" ]
+ENTRYPOINT [ "./target/release/app" ]
