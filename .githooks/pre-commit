@@ -1,11 +1,16 @@
 #!/bin/sh
 
 # update .sqlx on migration and repository changed adapter
-if git diff --quiet --exit-code  -- ./adapter; then
+if git diff --quiet --exit-code  -- ./adapter; then # exit code 0
+  echo "Nochanges detected in ./adapter"
+else # exit code 1
   echo "Running change db schema information ..."
-  cargo sqlx prepare > /dev/null 2>&1; git add .sqlx > /dev/null
-else
-  echo " Nochanges detected in ./adapter"
+  # avoid reset of .sqlx, check if DB container is running
+  if docker ps -q --filter "name=rust-api-postgres" | grep -q .; then
+    cargo sqlx prepare > /dev/null 2>&1; git add .sqlx > /dev/null
+  else
+    echo "No container running"
+  fi
 fi
 
 # if git diff --quiet --exit-code -- ./src; then
