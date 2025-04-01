@@ -122,12 +122,7 @@ fn init_logger() -> Result<()> {
     // set log level
     let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
 
-    // enable opentelemetry only on local
-    #[cfg(debug_assertions)]
     let opentelemetry = tracing_opentelemetry::layer().with_tracer(tracer);
-    #[cfg(not(debug_assertions))]
-    let opentelemetry = tracing_opentelemetry::layer().with_tracer(opentelemetry_jaeger::new_agent_pipeline());
-
     // local
     let subscriber = tracing_subscriber::fmt::layer()
         .with_file(true)
@@ -138,11 +133,12 @@ fn init_logger() -> Result<()> {
     #[cfg(not(debug_assertions))]
     let subscriber = subscriber.json();
     // initialize
-    tracing_subscriber::registry()
+    let mut registry = tracing_subscriber::registry()
         .with(subscriber)
-        .with(env_filter)
-        .with(opentelemetry)
-        .try_init()?;
+        .with(env_filter);
+    #[cfg(not(debug_assertions))]
+    let registry = registry.with(opentelemetry);
+    registry.try_init()?;
 
     Ok(())
 }
