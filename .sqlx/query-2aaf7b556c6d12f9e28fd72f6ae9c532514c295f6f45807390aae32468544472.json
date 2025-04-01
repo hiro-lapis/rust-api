@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    b.book_id AS book_id,\n                    b.title AS title,\n                    b.author AS author,\n                    b.isbn AS isbn,\n                    b.description AS description,\n                    u.user_id AS owned_by,\n                    u.name AS owner_name\n                FROM books AS b\n                INNER JOIN users AS u USING(user_id)\n                WHERE b.book_id IN (SELECT * FROM UNNEST($1::uuid[]))\n                ORDER BY b.created_at DESC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "book_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "author",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "isbn",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "description",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "owned_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 6,
+        "name": "owner_name",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "UuidArray"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2aaf7b556c6d12f9e28fd72f6ae9c532514c295f6f45807390aae32468544472"
+}
