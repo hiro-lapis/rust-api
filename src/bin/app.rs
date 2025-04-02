@@ -68,7 +68,11 @@ async fn bootstrap() -> Result<()> {
     #[cfg(debug_assertions)]
     let app = app.merge(Redoc::with_url("/docs", ApiDoc::openapi()));
 
-    let addr = SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080);
+    let addr = if cfg!(debug_assertions) {
+        SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080)
+    } else {
+        SocketAddr::new(Ipv4Addr::UNSPECIFIED.into(), 8080)
+    };
 
     let listener = TcpListener::bind(addr).await?;
     println!("Listening on {}", addr);
