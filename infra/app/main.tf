@@ -62,6 +62,15 @@ resource "aws_apprunner_service" "backend_book_manager" {
     auto_deployments_enabled = true
   }
 
+  health_check_configuration {
+    path                = "/api/v1/health"
+    protocol           = "HTTP"
+    interval           = 10
+    timeout            = 5
+    healthy_threshold  = 2
+    unhealthy_threshold = 3
+  }
+
   instance_configuration {
     cpu               = "1 vCPU"
     memory            = "2048"
