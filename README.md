@@ -1,7 +1,4 @@
-[tasks.compose-up-jaeger]
-extend = "set-env-docker"
-command = "docker"
-args = ["compose", "up", "-d", "jaeger"]## rust api
+# rust api
 
 This repository is the manual copy of [rusty-book-manager](https://github.com/rust-web-app-book/rusty-book-manager).  
 
